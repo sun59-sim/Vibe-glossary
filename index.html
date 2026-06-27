@@ -5,486 +5,552 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>바이브 코딩 용어집</title>
 <style>
-  :root{
-    --navy:#1E2A45; --navy-light:#2E3F63;
-    --cream:#FAF7F1; --gold:#C99A3B;
-    --text:#1E2A45; --muted:#6B7280;
-    --card:#FFFFFF; --border:#E5E1D8;
-    --basic-c:#4F7350; --basic-bg:#E6EFE2;
-    --tool-c:#9C7A1E; --tool-bg:#FBF1D9;
-    --dev-c:#3D5A80;  --dev-bg:#E2EAF4;
-    --ai-c:#A14B3D;   --ai-bg:#F7E4DF;
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --surface2: #273549;
+    --border: #334155;
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --text: #e2e8f0;
+    --text-muted: #94a3b8;
+    --tag-기초: #0ea5e9;
+    --tag-도구: #a78bfa;
+    --tag-개발: #34d399;
+    --tag-AI: #fb923c;
+    --radius: 10px;
   }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  body{
-    font-family:-apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-    background:var(--cream); color:var(--text);
-    -webkit-font-smoothing:antialiased;
-  }
-  .app{max-width:480px; margin:0 auto; min-height:100vh; background:var(--cream); padding-bottom:90px;}
-
-  header{
-    position:sticky; top:0; z-index:10;
-    background:var(--navy); color:#fff;
-    padding:16px 16px 12px;
-  }
-  header h1{font-size:18px; font-weight:600; letter-spacing:0.2px;}
-  header .count{font-size:12px; color:#C9D2E3; margin-top:2px;}
-
-  .controls{padding:12px 16px 0;}
-  .search-box{
-    width:100%; padding:10px 14px; font-size:14px;
-    border:1px solid var(--border); border-radius:10px;
-    background:#fff; color:var(--text);
-  }
-  .search-box:focus{outline:none; border-color:var(--gold);}
-
-  .chips{display:flex; gap:6px; overflow-x:auto; padding:10px 16px 0; -webkit-overflow-scrolling:touch;}
-  .chip{
-    flex:0 0 auto; padding:6px 14px; border-radius:999px; font-size:13px;
-    border:1px solid var(--border); background:#fff; color:var(--muted);
-    white-space:nowrap; cursor:pointer; font-weight:500;
-  }
-  .chip.active{border-color:transparent; color:#fff;}
-  .chip.active.all{background:var(--navy);}
-  .chip.active.basic{background:var(--basic-c);}
-  .chip.active.tool{background:var(--tool-c);}
-  .chip.active.dev{background:var(--dev-c);}
-  .chip.active.ai{background:var(--ai-c);}
-
-  .sort-row{display:flex; gap:6px; padding:10px 16px 4px;}
-  .sort-btn{
-    flex:1; padding:7px 2px; font-size:11px; font-weight:500;
-    border:1px solid var(--border); border-radius:8px; background:#fff; color:var(--muted);
-    cursor:pointer; white-space:nowrap; text-align:center;
-  }
-  .sort-btn.active{background:var(--navy); color:#fff; border-color:var(--navy);}
-
-  main{padding:8px 16px 0;}
-
-  .group-header{
-    font-size:13px; font-weight:600; margin:14px 2px 6px;
-    display:flex; align-items:center; gap:6px;
-  }
-  .group-header .dot{width:8px; height:8px; border-radius:50%;}
-
-  .card{
-    background:var(--card); border-radius:12px; padding:12px 14px;
-    margin-bottom:8px; border:1px solid var(--border);
-    border-left:4px solid var(--border);
-    cursor:pointer;
-  }
-  .card.basic{border-left-color:var(--basic-c);}
-  .card.tool{border-left-color:var(--tool-c);}
-  .card.dev{border-left-color:var(--dev-c);}
-  .card.ai{border-left-color:var(--ai-c);}
-
-  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
-  .card .term{font-size:15px; font-weight:600;}
-  .badge{
-    flex:0 0 auto; font-size:11px; font-weight:600; padding:2px 8px;
-    border-radius:999px; white-space:nowrap;
-  }
-  .badge.basic{color:var(--basic-c); background:var(--basic-bg);}
-  .badge.tool{color:var(--tool-c); background:var(--tool-bg);}
-  .badge.dev{color:var(--dev-c); background:var(--dev-bg);}
-  .badge.ai{color:var(--ai-c); background:var(--ai-bg);}
-
-  .card .sub{font-size:12px; color:var(--muted); margin-top:2px;}
-  .card .desc{font-size:13.5px; line-height:1.55; margin-top:6px; color:var(--text);}
-
-  .empty{text-align:center; color:var(--muted); font-size:14px; padding:40px 0;}
-
-  .fab{
-    position:fixed; bottom:24px; right:50%; transform:translateX(264px);
-    width:56px; height:56px; border-radius:50%;
-    background:var(--gold); color:var(--navy);
-    border:none; font-size:28px; font-weight:600;
-    box-shadow:0 4px 12px rgba(0,0,0,0.25);
-    cursor:pointer; z-index:20;
-    display:flex; align-items:center; justify-content:center;
-  }
-  @media (max-width:560px){
-    .fab{right:24px; transform:none;}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 60px;
   }
 
-  .overlay{
-    position:fixed; inset:0; background:rgba(0,0,0,0.45);
-    z-index:30; display:flex; align-items:flex-end; justify-content:center;
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 20px 20px;
+    text-align: center;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(10px);
   }
-  .overlay.hidden{display:none;}
-  .modal{
-    width:100%; max-width:480px; max-height:88vh; overflow-y:auto;
-    background:#fff; border-radius:16px 16px 0 0; padding:20px;
+  header h1 {
+    font-size: clamp(1.3rem, 4vw, 1.8rem);
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
   }
-  .modal h2{font-size:17px; font-weight:600; margin-bottom:14px;}
-  .field{margin-bottom:12px;}
-  .field label{display:block; font-size:12.5px; font-weight:600; color:var(--muted); margin-bottom:5px;}
-  .field input, .field select, .field textarea{
-    width:100%; padding:10px 12px; font-size:14px;
-    border:1px solid var(--border); border-radius:8px;
-    background:#fff; color:var(--text); font-family:inherit;
+  .subtitle { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
+  .stat-bar {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    margin-top: 12px;
   }
-  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--gold);}
-  .field textarea{resize:vertical; min-height:64px; line-height:1.5;}
+  .stat-chip {
+    font-size: 0.72rem; padding: 3px 10px; border-radius: 20px;
+    border: 1px solid var(--border); color: var(--text-muted); background: var(--surface);
+  }
+  .stat-chip span { color: var(--accent); font-weight: 700; }
 
-  .modal-actions{display:flex; gap:8px; margin-top:16px;}
-  .btn{
-    flex:1; padding:12px 0; border-radius:10px; font-size:14px; font-weight:600;
-    border:1px solid var(--border); background:#fff; color:var(--text); cursor:pointer;
+  /* CONTROLS */
+  .controls {
+    max-width: 760px; margin: 16px auto 0; padding: 0 16px;
+    display: flex; flex-direction: column; gap: 10px;
   }
-  .btn-primary{background:var(--gold); color:var(--navy); border-color:var(--gold);}
-  .btn-danger{background:#fff; color:#B3392E; border-color:#F0CFC9; flex:0 0 auto; padding:12px 16px;}
+  .search-wrap { position: relative; }
+  .search-wrap input {
+    width: 100%; padding: 11px 16px 11px 42px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text); font-size: 0.9rem;
+    outline: none; transition: border-color .2s;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap .icon {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); font-size: 1rem; pointer-events: none;
+  }
 
-  .reset-row{text-align:center; padding:18px 0 4px;}
-  .reset-row a{font-size:12px; color:var(--muted); text-decoration:underline; cursor:pointer;}
+  .filter-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .filter-btn {
+    padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-muted); font-size: 0.8rem;
+    cursor: pointer; transition: all .18s; white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #0f172a; font-weight: 700; }
+  .filter-btn.cat-기초.active { background: var(--tag-기초); border-color: var(--tag-기초); }
+  .filter-btn.cat-도구.active { background: var(--tag-도구); border-color: var(--tag-도구); }
+  .filter-btn.cat-개발.active { background: var(--tag-개발); border-color: var(--tag-개발); }
+  .filter-btn.cat-AI.active  { background: var(--tag-AI);   border-color: var(--tag-AI);   }
+
+  .sort-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .sort-label { font-size: 0.75rem; color: var(--text-muted); }
+  .sort-btn {
+    padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-muted); font-size: 0.78rem;
+    cursor: pointer; transition: all .18s;
+  }
+  .sort-btn.active { border-color: var(--accent2); color: var(--accent2); }
+
+  /* RESULTS COUNT */
+  .results-info {
+    max-width: 760px; margin: 10px auto 0; padding: 0 16px;
+    font-size: 0.78rem; color: var(--text-muted);
+  }
+
+  /* GRID */
+  .grid {
+    max-width: 760px; margin: 12px auto 0; padding: 0 16px;
+    display: grid; gap: 10px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+    transition: border-color .2s, transform .15s;
+    cursor: default;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .card-top { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .term-ko { font-size: 1rem; font-weight: 700; color: var(--text); flex: 1; min-width: 120px; }
+  .term-en { font-size: 0.8rem; color: var(--text-muted); margin-top: 1px; font-family: monospace; }
+  .cat-tag {
+    font-size: 0.68rem; padding: 3px 9px; border-radius: 20px;
+    font-weight: 700; white-space: nowrap; margin-top: 2px;
+  }
+  .cat-기초 { background: rgba(14,165,233,.15); color: var(--tag-기초); border: 1px solid rgba(14,165,233,.3); }
+  .cat-도구 { background: rgba(167,139,250,.15); color: var(--tag-도구); border: 1px solid rgba(167,139,250,.3); }
+  .cat-개발 { background: rgba(52,211,153,.15); color: var(--tag-개발); border: 1px solid rgba(52,211,153,.3); }
+  .cat-AI   { background: rgba(251,146,60,.15);  color: var(--tag-AI);   border: 1px solid rgba(251,146,60,.3);  }
+
+  .desc { font-size: 0.84rem; color: var(--text-muted); margin-top: 8px; line-height: 1.6; }
+
+  /* ADD BUTTON */
+  .fab {
+    position: fixed; bottom: 24px; right: 20px;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; color: #0f172a; font-size: 1.5rem; font-weight: 700;
+    cursor: pointer; box-shadow: 0 4px 20px rgba(56,189,248,.4);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .2s;
+  }
+  .fab:hover { transform: scale(1.1); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.7); z-index: 200;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px; width: 100%; max-width: 480px;
+  }
+  .modal h2 { font-size: 1rem; margin-bottom: 16px; color: var(--accent); }
+  .modal label { font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px; }
+  .modal input, .modal textarea, .modal select {
+    width: 100%; padding: 9px 12px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; color: var(--text); font-size: 0.88rem;
+    outline: none; margin-bottom: 12px;
+  }
+  .modal textarea { min-height: 80px; resize: vertical; font-family: inherit; }
+  .modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
+  .btn-cancel {
+    padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); cursor: pointer; font-size: 0.85rem;
+  }
+  .btn-save {
+    padding: 8px 18px; border-radius: 8px; border: none;
+    background: var(--accent); color: #0f172a; cursor: pointer;
+    font-size: 0.85rem; font-weight: 700;
+  }
+
+  /* EMPTY */
+  .empty { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 0.9rem; }
+
+  /* NEW BADGE */
+  .new-badge {
+    font-size: 0.6rem; background: #fb923c; color: #0f172a;
+    padding: 1px 6px; border-radius: 20px; font-weight: 800; margin-left: 4px;
+    vertical-align: middle;
+  }
 </style>
 </head>
 <body>
-<div class="app">
-  <header>
-    <h1>바이브 코딩 용어집</h1>
-    <div class="count" id="countLabel"></div>
-  </header>
 
-  <div class="controls">
-    <input type="text" class="search-box" id="searchInput" placeholder="용어 검색...">
+<header>
+  <h1>🧑‍💻 바이브 코딩 용어집</h1>
+  <div class="subtitle">AI 활용 개발 · IT 필수 용어 사전</div>
+  <div class="stat-bar" id="statBar"></div>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <span class="icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="용어 검색 (한글 또는 영문)..." oninput="render()">
   </div>
-
-  <div class="chips" id="chipRow">
-    <div class="chip active all" data-cat="all">전체</div>
-    <div class="chip" data-cat="basic">기초</div>
-    <div class="chip" data-cat="tool">도구</div>
-    <div class="chip" data-cat="dev">개발</div>
-    <div class="chip" data-cat="ai">AI</div>
-  </div>
-
+  <div class="filter-row" id="filterRow"></div>
   <div class="sort-row">
-    <div class="sort-btn active" data-sort="category">카테고리별</div>
-    <div class="sort-btn" data-sort="kr">한글 가나다순</div>
-    <div class="sort-btn" data-sort="en">영문 ABC순</div>
+    <span class="sort-label">정렬:</span>
+    <button class="sort-btn active" onclick="setSort('default')" id="sort-default">기본순</button>
+    <button class="sort-btn" onclick="setSort('ko')" id="sort-ko">한글 가나다순</button>
+    <button class="sort-btn" onclick="setSort('en')" id="sort-en">영문 ABC순</button>
   </div>
-
-  <main id="termList"></main>
-
-  <div class="reset-row"><a id="resetLink">기본 용어집으로 초기화</a></div>
 </div>
 
-<button class="fab" id="addBtn">+</button>
+<div class="results-info" id="resultsInfo"></div>
+<div class="grid" id="grid"></div>
 
-<div class="overlay hidden" id="overlay">
+<button class="fab" title="새 용어 추가" onclick="openModal()">+</button>
+
+<div class="modal-overlay" id="modalOverlay">
   <div class="modal">
-    <h2 id="modalTitle">새 용어 추가</h2>
-    <form id="termForm">
-      <div class="field">
-        <label>용어</label>
-        <input type="text" name="term" required placeholder="예: API, 가상환경">
-      </div>
-      <div class="field">
-        <label>원어 / 영문 표기 (선택)</label>
-        <input type="text" name="sub" placeholder="예: Application Programming Interface">
-      </div>
-      <div class="field">
-        <label>설명</label>
-        <textarea name="desc" required placeholder="쉬운 말로 설명해 주세요"></textarea>
-      </div>
-      <div class="field">
-        <label>카테고리</label>
-        <select name="cat">
-          <option value="basic">기초</option>
-          <option value="tool">도구</option>
-          <option value="dev">개발</option>
-          <option value="ai">AI</option>
-        </select>
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn btn-danger" id="deleteBtn" style="display:none;">삭제</button>
-        <button type="button" class="btn" id="cancelBtn">취소</button>
-        <button type="submit" class="btn btn-primary">저장</button>
-      </div>
-    </form>
+    <h2>➕ 새 용어 추가</h2>
+    <label>용어 (한글)</label>
+    <input type="text" id="f-ko" placeholder="예: 버그">
+    <label>원어 / 영문 (선택)</label>
+    <input type="text" id="f-en" placeholder="예: Bug">
+    <label>설명</label>
+    <textarea id="f-desc" placeholder="설명을 입력하세요..."></textarea>
+    <label>카테고리</label>
+    <select id="f-cat">
+      <option value="기초">기초</option>
+      <option value="도구">도구</option>
+      <option value="개발">개발</option>
+      <option value="AI">AI</option>
+    </select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">취소</button>
+      <button class="btn-save" onclick="addTerm()">저장</button>
+    </div>
   </div>
 </div>
 
 <script>
-const STORAGE_KEY = "vibeGlossaryData_v1";
+// ─── DEFAULT DATA ────────────────────────────────────────────────────────────
+const DEFAULT_TERMS = [
+  // ════ 기초 ════
+  {ko:"바이브 코딩",en:"Vibe Coding",cat:"기초",desc:"AI에게 원하는 것을 자연어로 설명하고, 결과물을 직접 검토하지 않고 실행 여부로만 판단하는 개발 방식. Andrej Karpathy가 2025년 초 제안한 개념."},
+  {ko:"프롬프트",en:"Prompt",cat:"기초",desc:"AI에게 전달하는 명령이나 질문. '무엇을 만들어줘', '이 코드를 수정해줘'처럼 작업 지시 문장 전체를 가리킴."},
+  {ko:"컨텍스트",en:"Context",cat:"기초",desc:"AI가 현재 대화에서 참고하는 모든 정보. 이전 대화 내용, 업로드한 파일, 시스템 프롬프트 등이 포함됨."},
+  {ko:"토큰",en:"Token",cat:"기초",desc:"AI가 텍스트를 처리하는 최소 단위. 영어는 단어, 한국어는 음절 또는 형태소 단위로 분리됨. 토큰 수가 많을수록 비용·시간 증가."},
+  {ko:"컨텍스트 창",en:"Context Window",cat:"기초",desc:"AI가 한 번에 처리할 수 있는 최대 토큰 수. Claude의 경우 최대 20만 토큰(약 책 한 권 분량)."},
+  {ko:"할루시네이션",en:"Hallucination",cat:"기초",desc:"AI가 사실이 아닌 정보를 자신있게 출력하는 현상. 없는 함수나 라이브러리를 있는 것처럼 코드에 쓰는 경우가 대표적."},
+  {ko:"시스템 프롬프트",en:"System Prompt",cat:"기초",desc:"AI의 역할·톤·규칙을 미리 설정하는 숨겨진 지시문. '너는 전문 개발자야'처럼 대화 시작 전에 부여함."},
+  {ko:"멀티모달",en:"Multimodal",cat:"기초",desc:"텍스트뿐 아니라 이미지, 오디오, 영상 등 여러 형태의 입력을 처리할 수 있는 AI 능력."},
+  {ko:"파운데이션 모델",en:"Foundation Model",cat:"기초",desc:"대규모 데이터로 사전 훈련된 범용 AI 기반 모델. GPT, Claude, Gemini 등이 해당. 다양한 작업에 재활용 가능."},
+  {ko:"파인튜닝",en:"Fine-tuning",cat:"기초",desc:"기반 모델을 특정 작업·도메인 데이터로 추가 학습시켜 성능을 높이는 과정."},
+  {ko:"RAG",en:"Retrieval-Augmented Generation",cat:"기초",desc:"AI가 외부 데이터베이스에서 관련 정보를 검색한 뒤 답변을 생성하는 방식. 최신 정보 반영 및 환각 감소에 효과적."},
+  {ko:"제로샷",en:"Zero-shot",cat:"기초",desc:"예시 없이 AI에게 바로 작업을 요청하는 방식. '이 문장을 영어로 번역해줘'처럼 별도 예시 없이 지시."},
+  {ko:"퓨샷",en:"Few-shot",cat:"기초",desc:"몇 가지 예시를 보여준 뒤 같은 패턴으로 작업을 요청하는 방식. 예시가 많을수록 정확도 상승."},
+  {ko:"체인오브소트",en:"Chain of Thought (CoT)",cat:"기초",desc:"AI에게 '단계별로 생각해줘'라고 지시해 논리적 추론 과정을 거치게 하는 프롬프트 기법. 복잡한 문제에 효과적."},
+  {ko:"온도",en:"Temperature",cat:"기초",desc:"AI 출력의 창의성/무작위성 정도. 0에 가까울수록 결정론적·정확, 1 이상이면 창의적·예측 불가."},
+  {ko:"API",en:"Application Programming Interface",cat:"기초",desc:"프로그램끼리 소통하기 위한 약속된 인터페이스. Claude API를 호출하면 앱에서 AI 기능을 쓸 수 있음."},
+  {ko:"엔드포인트",en:"Endpoint",cat:"기초",desc:"API 요청을 받는 특정 URL 주소. 예: https://api.anthropic.com/v1/messages"},
+  {ko:"SDK",en:"Software Development Kit",cat:"기초",desc:"특정 서비스를 쉽게 사용하도록 도와주는 라이브러리·도구 모음. Anthropic SDK를 쓰면 Claude API를 간단히 연동 가능."},
+  {ko:"레이턴시",en:"Latency",cat:"기초",desc:"요청을 보내고 응답이 올 때까지 걸리는 시간. AI 서비스에서는 첫 토큰이 나올 때까지의 시간(TTFT)이 중요."},
+  {ko:"스트리밍",en:"Streaming",cat:"기초",desc:"AI 응답이 완성될 때까지 기다리지 않고, 생성되는 즉시 실시간으로 출력하는 방식. ChatGPT의 타이핑 효과가 대표적."},
+  {ko:"클라우드",en:"Cloud",cat:"기초",desc:"인터넷을 통해 서버·저장소·소프트웨어를 빌려 쓰는 서비스. AWS, Azure, GCP가 3대 클라우드."},
+  {ko:"서버리스",en:"Serverless",cat:"기초",desc:"서버를 직접 관리하지 않고, 함수 단위로 코드를 실행하는 방식. AWS Lambda, Vercel Functions 등."},
+  {ko:"오픈소스",en:"Open Source",cat:"기초",desc:"소스 코드를 누구나 볼 수 있고 수정·배포할 수 있는 소프트웨어. GitHub에 공개된 대부분의 프로젝트가 해당."},
+  {ko:"버전 관리",en:"Version Control",cat:"기초",desc:"파일 변경 이력을 기록하고 필요 시 이전 상태로 되돌리는 시스템. Git이 사실상 표준."},
+  {ko:"디버깅",en:"Debugging",cat:"기초",desc:"코드의 오류(버그)를 찾아 수정하는 과정. 바이브 코딩에서는 오류 메시지를 AI에게 그대로 붙여넣는 것이 기본 전략."},
+  {ko:"배포",en:"Deploy",cat:"기초",desc:"개발한 앱을 실제 사용자가 접근할 수 있는 서버(또는 서비스)에 올리는 작업."},
+  {ko:"로컬 환경",en:"Local Environment",cat:"기초",desc:"인터넷이 아닌 자신의 컴퓨터에서 코드를 실행하는 개발 환경. '내 PC에서 돌린다'는 뜻."},
+  {ko:"프로덕션",en:"Production",cat:"기초",desc:"실제 사용자가 사용하는 실서비스 환경. 반대는 개발(Development) 또는 스테이징(Staging) 환경."},
+  {ko:"스택",en:"Stack",cat:"기초",desc:"서비스 개발에 사용되는 기술 조합. 'HTML+CSS+JS+Firebase'처럼 프론트~백엔드까지의 기술 세트."},
+  {ko:"리팩토링",en:"Refactoring",cat:"기초",desc:"기능은 그대로 두고 코드 구조를 개선하는 작업. AI에게 '이 코드를 더 깔끔하게 고쳐줘'라고 하면 됨."},
+  {ko:"스캐폴딩",en:"Scaffolding",cat:"기초",desc:"프로젝트의 기본 폴더·파일 구조를 자동으로 생성해주는 것. AI에게 '프로젝트 뼈대를 만들어줘'라고 하면 만들어줌."},
+  {ko:"이터레이션",en:"Iteration",cat:"기초",desc:"기능을 조금씩 추가하며 반복적으로 개선하는 개발 방식. 바이브 코딩의 핵심 작업 방식."},
+  {ko:"보일러플레이트",en:"Boilerplate",cat:"기초",desc:"새 프로젝트 시작 시 반복적으로 쓰이는 기본 코드 템플릿. 재사용 가능한 초기 코드 묶음."},
+  {ko:"마이그레이션",en:"Migration",cat:"기초",desc:"데이터나 시스템을 다른 환경·구조로 옮기는 작업. DB 스키마 변경, 플랫폼 이동 등."},
+  {ko:"인증",en:"Authentication",cat:"기초",desc:"사용자가 누구인지 확인하는 과정. 로그인, OAuth, JWT 등이 해당."},
+  {ko:"인가",en:"Authorization",cat:"기초",desc:"인증된 사용자가 특정 리소스에 접근할 권한이 있는지 확인하는 과정. 인증(Authentication)과 구별해야 함."},
+  {ko:"HTTPS",en:"HTTPS",cat:"기초",desc:"데이터를 암호화해 주고받는 보안 통신 프로토콜. 주소창에 자물쇠 아이콘이 표시되면 HTTPS."},
+  {ko:"캐싱",en:"Caching",cat:"기초",desc:"자주 쓰는 데이터를 빠른 저장소에 미리 저장해 응답 속도를 높이는 기법."},
+  {ko:"비동기",en:"Async / Asynchronous",cat:"기초",desc:"작업이 끝날 때까지 기다리지 않고 다음 작업을 실행하는 방식. JavaScript의 async/await가 대표적."},
+  {ko:"동기",en:"Synchronous",cat:"기초",desc:"앞 작업이 끝난 뒤 다음 작업을 순서대로 실행하는 방식. 코드가 직관적이지만 느릴 수 있음."},
+  {ko:"UI",en:"User Interface",cat:"기초",desc:"사용자가 직접 보고 조작하는 화면 구성 요소. 버튼, 입력창, 메뉴 등."},
+  {ko:"UX",en:"User Experience",cat:"기초",desc:"사용자가 서비스를 이용할 때 느끼는 전반적인 경험. 사용 편의성, 흐름, 만족도를 포함."},
+  {ko:"반응형 디자인",en:"Responsive Design",cat:"기초",desc:"화면 크기(PC, 태블릿, 모바일)에 따라 레이아웃이 자동으로 조정되는 웹 디자인 방식."},
+  {ko:"REST API",en:"REST API",cat:"기초",desc:"HTTP 방식으로 데이터를 주고받는 API 설계 방식. GET·POST·PUT·DELETE 등 HTTP 메서드를 활용."},
 
-const CAT = {
-  basic:{label:"기초", color:"var(--basic-c)"},
-  tool:{label:"도구", color:"var(--tool-c)"},
-  dev:{label:"개발", color:"var(--dev-c)"},
-  ai:{label:"AI", color:"var(--ai-c)"}
-};
-const CAT_ORDER = ["basic","tool","dev","ai"];
+  // ════ 도구 ════
+  {ko:"Claude",en:"Claude",cat:"도구",desc:"Anthropic이 개발한 AI 어시스턴트. 바이브 코딩에서 코드 작성·설명·디버깅에 주로 활용됨. 현재 Sonnet 4.6, Opus 4 등 버전 존재."},
+  {ko:"ChatGPT",en:"ChatGPT",cat:"도구",desc:"OpenAI가 개발한 AI 챗봇. GPT-4o 기반. 코딩, 글쓰기, 분석 등에 널리 사용됨."},
+  {ko:"Cursor",en:"Cursor",cat:"도구",desc:"AI가 통합된 코드 에디터. VSCode 기반으로 AI와 대화하며 코드를 작성·수정할 수 있음. 바이브 코딩에 최적화."},
+  {ko:"VS Code",en:"Visual Studio Code",cat:"도구",desc:"Microsoft가 만든 무료 코드 에디터. 확장 프로그램이 풍부하고 AI 플러그인(Copilot 등) 연동이 용이함."},
+  {ko:"GitHub Copilot",en:"GitHub Copilot",cat:"도구",desc:"GitHub·OpenAI가 만든 AI 코딩 보조 도구. VS Code 등에서 코드 자동 완성·제안 기능 제공."},
+  {ko:"GitHub",en:"GitHub",cat:"도구",desc:"Git 저장소를 온라인으로 관리하는 플랫폼. 코드 공유, 협업, GitHub Pages를 통한 무료 배포 가능."},
+  {ko:"GitHub Pages",en:"GitHub Pages",cat:"도구",desc:"GitHub 저장소의 코드를 무료로 웹사이트로 배포해주는 서비스. 바이브 코딩 결과물을 즉시 공개 가능."},
+  {ko:"Netlify",en:"Netlify",cat:"도구",desc:"웹 앱을 손쉽게 배포할 수 있는 서비스. GitHub 저장소와 연동하면 코드 변경 시 자동 배포됨."},
+  {ko:"Vercel",en:"Vercel",cat:"도구",desc:"Next.js 앱 배포에 최적화된 클라우드 플랫폼. 무료 플랜으로도 프로젝트 여러 개 배포 가능."},
+  {ko:"Replit",en:"Replit",cat:"도구",desc:"브라우저에서 바로 코딩하고 실행·배포까지 가능한 온라인 개발 환경. 설치 없이 바로 시작 가능."},
+  {ko:"Lovable",en:"Lovable",cat:"도구",desc:"자연어 설명만으로 웹앱을 자동 생성해주는 AI 플랫폼. 디자인·코드·배포까지 한 번에 처리."},
+  {ko:"Bolt",en:"Bolt.new",cat:"도구",desc:"StackBlitz가 만든 AI 코딩 플랫폼. 브라우저에서 풀스택 앱을 프롬프트로 즉시 생성·실행·배포."},
+  {ko:"v0",en:"v0 by Vercel",cat:"도구",desc:"Vercel이 만든 AI UI 생성 도구. 텍스트 설명으로 React 컴포넌트와 UI를 자동 생성."},
+  {ko:"Windsurf",en:"Windsurf",cat:"도구",desc:"Codeium이 만든 AI 코드 에디터. Cursor의 경쟁 제품으로 AI 에이전트 기능 내장."},
+  {ko:"Claude Code",en:"Claude Code",cat:"도구",desc:"Anthropic이 만든 터미널 기반 AI 코딩 도구. 명령줄에서 Claude와 대화하며 코드·파일·저장소를 관리."},
+  {ko:"Perplexity",en:"Perplexity AI",cat:"도구",desc:"실시간 웹 검색 기능이 내장된 AI 검색 엔진. 최신 정보를 출처와 함께 제공함."},
+  {ko:"Gemini",en:"Gemini",cat:"도구",desc:"Google이 개발한 AI 모델. Google Docs, Drive 등 Google 제품군과 통합 가능."},
+  {ko:"Figma",en:"Figma",cat:"도구",desc:"브라우저 기반 UI/UX 디자인 협업 도구. 최근 AI 기능 추가로 디자인→코드 변환 가능."},
+  {ko:"Firebase",en:"Firebase",cat:"도구",desc:"Google의 앱 백엔드 서비스. 인증, DB(Firestore), 호스팅, 스토리지를 코드 없이 쉽게 구현 가능."},
+  {ko:"Supabase",en:"Supabase",cat:"도구",desc:"오픈소스 Firebase 대안. PostgreSQL 기반 DB, 인증, 저장소 등을 제공. 바이브 코딩에서 백엔드로 자주 사용."},
+  {ko:"Notion",en:"Notion",cat:"도구",desc:"문서·데이터베이스·프로젝트 관리를 통합한 협업 도구. AI 기능도 추가됨."},
+  {ko:"Make",en:"Make (구 Integromat)",cat:"도구",desc:"노코드 자동화 플랫폼. 여러 앱을 시각적으로 연결해 워크플로를 자동화."},
+  {ko:"Zapier",en:"Zapier",cat:"도구",desc:"수천 개의 앱을 연결해 반복 작업을 자동화하는 노코드 플랫폼. 코딩 없이 자동화 구현 가능."},
+  {ko:"n8n",en:"n8n",cat:"도구",desc:"오픈소스 워크플로 자동화 도구. Make·Zapier처럼 앱을 연결하되 자체 서버에 설치 가능."},
+  {ko:"Postman",en:"Postman",cat:"도구",desc:"API 테스트·개발 도구. 특정 엔드포인트에 요청을 보내고 응답을 확인하는 데 사용."},
+  {ko:"Docker",en:"Docker",cat:"도구",desc:"앱과 실행 환경을 컨테이너로 패키징하는 도구. '내 컴퓨터에서는 됐는데'라는 환경 차이 문제를 해결."},
+  {ko:"Git",en:"Git",cat:"도구",desc:"코드 변경 이력을 추적하는 분산 버전 관리 시스템. 브랜치, 커밋, 머지 등의 기능 제공."},
+  {ko:"터미널",en:"Terminal / CLI",cat:"도구",desc:"텍스트 명령어로 컴퓨터를 제어하는 인터페이스. 바이브 코딩에서 npm 설치, Git 명령 등에 사용."},
+  {ko:"npm",en:"npm (Node Package Manager)",cat:"도구",desc:"Node.js 라이브러리(패키지)를 설치·관리하는 도구. 'npm install 패키지명' 형식으로 사용."},
+  {ko:"Yarn",en:"Yarn",cat:"도구",desc:"npm의 대안 패키지 관리자. 속도와 안정성이 개선됨."},
+  {ko:"ChatGPT Canvas",en:"ChatGPT Canvas",cat:"도구",desc:"OpenAI의 코드·글쓰기 전용 편집 캔버스. AI와 협업하며 실시간으로 문서·코드를 편집."},
+  {ko:"Anthropic Console",en:"Anthropic Console",cat:"도구",desc:"Anthropic API 키 관리·사용량 확인·프롬프트 테스트를 할 수 있는 개발자 대시보드."},
+  {ko:"Google Colab",en:"Google Colab",cat:"도구",desc:"구글이 제공하는 무료 클라우드 Jupyter 노트북. Python 코드를 브라우저에서 바로 실행 가능."},
+  {ko:"Jupyter Notebook",en:"Jupyter Notebook",cat:"도구",desc:"코드·설명·시각화를 한 문서에 담는 대화형 개발 도구. 데이터 분석·AI 실험에 많이 사용."},
+  {ko:"Tailwind CSS",en:"Tailwind CSS",cat:"도구",desc:"유틸리티 클래스 기반 CSS 프레임워크. HTML에 클래스 이름만 추가해 빠르게 스타일링 가능."},
+  {ko:"MCP",en:"Model Context Protocol",cat:"도구",desc:"Anthropic이 만든 AI-도구 연동 표준. Claude가 외부 앱(캘린더, DB, 파일 등)을 직접 제어할 수 있게 함."},
+  {ko:"Airtable",en:"Airtable",cat:"도구",desc:"스프레드시트와 DB를 결합한 노코드 도구. API를 통해 AI와 연동 가능."},
 
-// 용어의 첫 글자가 영문/숫자면 영문 용어, 아니면 한글 용어로 구분
-function getType(term){
-  return /^[A-Za-z0-9]/.test(term) ? "en" : "kr";
-}
+  // ════ 개발 ════
+  {ko:"HTML",en:"HTML",cat:"개발",desc:"웹 페이지의 구조를 만드는 마크업 언어. 제목, 문단, 버튼 등 요소를 태그로 정의함."},
+  {ko:"CSS",en:"CSS",cat:"개발",desc:"HTML 요소의 시각적 스타일(색상, 크기, 레이아웃 등)을 정의하는 언어."},
+  {ko:"JavaScript",en:"JavaScript",cat:"개발",desc:"웹 페이지에 동적 기능을 추가하는 프로그래밍 언어. 버튼 클릭 시 반응, 데이터 처리 등에 사용."},
+  {ko:"Python",en:"Python",cat:"개발",desc:"문법이 간결하고 AI/데이터 분야에 강한 프로그래밍 언어. 라이브러리가 풍부해 빠른 개발 가능."},
+  {ko:"React",en:"React",cat:"개발",desc:"Meta가 만든 JavaScript UI 라이브러리. 컴포넌트 단위로 UI를 구성하며 현재 가장 많이 쓰이는 프론트엔드 도구."},
+  {ko:"Next.js",en:"Next.js",cat:"개발",desc:"React 기반 풀스택 웹 프레임워크. 서버사이드 렌더링, 라우팅, API 기능을 내장해 완성도 높은 앱 개발 가능."},
+  {ko:"Node.js",en:"Node.js",cat:"개발",desc:"JavaScript를 브라우저 밖(서버)에서 실행하는 런타임. 백엔드 API 서버 개발에 주로 사용."},
+  {ko:"TypeScript",en:"TypeScript",cat:"개발",desc:"JavaScript에 타입(자료형) 명시 기능을 추가한 언어. 코드 오류를 실행 전에 잡을 수 있어 대규모 프로젝트에 유리."},
+  {ko:"JSON",en:"JSON",cat:"개발",desc:"데이터를 키-값 쌍으로 표현하는 포맷. API 응답, 설정 파일 등에 광범위하게 사용됨."},
+  {ko:"함수",en:"Function",cat:"개발",desc:"특정 작업을 수행하는 재사용 가능한 코드 블록. 입력값(인자)을 받아 결과값을 반환함."},
+  {ko:"변수",en:"Variable",cat:"개발",desc:"데이터를 저장하는 이름 붙인 메모리 공간. let, const, var 등으로 선언함."},
+  {ko:"배열",en:"Array",cat:"개발",desc:"여러 값을 순서대로 저장하는 자료 구조. JavaScript에서 대괄호 []로 표현."},
+  {ko:"객체",en:"Object",cat:"개발",desc:"키-값 쌍으로 여러 속성을 담는 자료 구조. JavaScript에서 중괄호 {}로 표현."},
+  {ko:"루프",en:"Loop",cat:"개발",desc:"같은 코드를 반복 실행하는 구조. for, while 문 등이 있음."},
+  {ko:"조건문",en:"Conditional",cat:"개발",desc:"특정 조건에 따라 다른 코드를 실행하는 구조. if/else, switch 등이 해당."},
+  {ko:"클래스",en:"Class",cat:"개발",desc:"객체를 만드는 설계도. 속성(변수)과 행동(함수)을 묶어 정의. 객체지향 프로그래밍의 핵심 개념."},
+  {ko:"컴포넌트",en:"Component",cat:"개발",desc:"UI를 구성하는 독립적이고 재사용 가능한 코드 단위. React에서 버튼, 카드, 폼 등 각각이 컴포넌트."},
+  {ko:"상태",en:"State",cat:"개발",desc:"컴포넌트가 기억하는 데이터. 상태가 바뀌면 UI가 자동으로 다시 그려짐. React의 useState가 대표적."},
+  {ko:"훅",en:"Hook",cat:"개발",desc:"React에서 함수형 컴포넌트에 상태·생명주기 등의 기능을 추가하는 함수. useState, useEffect 등."},
+  {ko:"라이브러리",en:"Library",cat:"개발",desc:"특정 기능을 미리 구현해둔 코드 모음. 가져다 쓰기만 하면 됨. React, Lodash 등."},
+  {ko:"프레임워크",en:"Framework",cat:"개발",desc:"앱 개발의 전체 구조와 규칙을 제공하는 도구. 라이브러리보다 더 큰 개념으로, 개발 방식 자체를 정의함."},
+  {ko:"패키지",en:"Package",cat:"개발",desc:"npm 등으로 설치하는 코드 묶음. 라이브러리와 비슷한 개념으로 혼용됨."},
+  {ko:"모듈",en:"Module",cat:"개발",desc:"기능별로 분리된 코드 파일. import/export로 다른 파일에서 사용 가능."},
+  {ko:"빌드",en:"Build",cat:"개발",desc:"소스 코드를 브라우저나 서버가 실행할 수 있는 최적화된 파일로 변환하는 과정."},
+  {ko:"번들링",en:"Bundling",cat:"개발",desc:"여러 파일을 하나(또는 소수)의 파일로 합치는 과정. Webpack, Vite 등이 사용됨."},
+  {ko:"환경변수",en:"Environment Variable",cat:"개발",desc:"코드에 직접 쓰지 않고 외부에서 주입하는 설정값. API 키, DB 비밀번호 등 민감 정보 관리에 필수."},
+  {ko:"로컬스토리지",en:"localStorage",cat:"개발",desc:"브라우저에 데이터를 영구적으로 저장하는 기능. 서버 없이 간단한 데이터를 저장할 때 사용."},
+  {ko:"쿠키",en:"Cookie",cat:"개발",desc:"브라우저에 소량의 데이터를 저장하는 방식. 로그인 상태 유지, 사용자 설정 저장 등에 사용."},
+  {ko:"DOM",en:"Document Object Model",cat:"개발",desc:"HTML 문서를 트리 구조로 표현한 것. JavaScript로 DOM을 조작해 화면을 동적으로 변경."},
+  {ko:"이벤트",en:"Event",cat:"개발",desc:"사용자의 클릭·입력·스크롤 등 상호작용. 이벤트 리스너로 감지해 동작을 실행."},
+  {ko:"콜백",en:"Callback",cat:"개발",desc:"다른 함수의 인자로 전달되는 함수. 특정 작업이 완료된 후 실행되도록 예약하는 패턴."},
+  {ko:"프로미스",en:"Promise",cat:"개발",desc:"비동기 작업의 완료 또는 실패를 나타내는 객체. .then()과 .catch()로 결과 처리."},
+  {ko:"데이터베이스",en:"Database",cat:"개발",desc:"데이터를 체계적으로 저장·관리하는 시스템. SQL(관계형)과 NoSQL(비관계형)으로 구분."},
+  {ko:"SQL",en:"SQL",cat:"개발",desc:"관계형 DB에서 데이터를 조회·수정하는 언어. SELECT, INSERT, UPDATE, DELETE가 핵심."},
+  {ko:"NoSQL",en:"NoSQL",cat:"개발",desc:"행·열 대신 JSON 문서, 키-값, 그래프 등 유연한 구조로 데이터를 저장하는 DB. MongoDB, Firestore 등."},
+  {ko:"스키마",en:"Schema",cat:"개발",desc:"DB 테이블의 구조 정의. 어떤 컬럼이 있고 어떤 데이터 타입인지를 명세."},
+  {ko:"CRUD",en:"CRUD",cat:"개발",desc:"생성(Create)·조회(Read)·수정(Update)·삭제(Delete)의 약자. 대부분의 앱이 수행하는 4가지 기본 데이터 작업."},
+  {ko:"웹훅",en:"Webhook",cat:"개발",desc:"특정 이벤트 발생 시 서버가 다른 서버에 자동으로 HTTP 요청을 보내는 방식. 자동화 연동에 필수."},
+  {ko:"CORS",en:"CORS",cat:"개발",desc:"다른 도메인 간 리소스 공유를 제어하는 보안 정책. API 호출 시 자주 만나는 오류 원인."},
+  {ko:"마크다운",en:"Markdown",cat:"개발",desc:"#, **, - 등 간단한 기호로 서식을 지정하는 텍스트 형식. GitHub README, Notion, Claude 응답 등에 사용됨."},
+  {ko:"정규표현식",en:"Regular Expression (Regex)",cat:"개발",desc:"문자열 패턴을 정의하는 언어. 특정 형식의 문자열 검색·검증·치환에 사용."},
+  {ko:"플러그인",en:"Plugin",cat:"개발",desc:"기존 프로그램의 기능을 확장하는 추가 모듈. VS Code 확장, Figma 플러그인 등."},
+  {ko:"의존성",en:"Dependency",cat:"개발",desc:"내 코드가 작동하기 위해 필요한 외부 패키지. package.json의 dependencies 항목에 기록됨."},
+  {ko:"포트",en:"Port",cat:"개발",desc:"서버에서 특정 서비스가 대기하는 논리적 통로 번호. localhost:3000의 3000이 포트 번호."},
+  {ko:"라우팅",en:"Routing",cat:"개발",desc:"URL 경로에 따라 어떤 화면이나 기능을 보여줄지 결정하는 것. /home, /about 등 경로 매핑."},
+  {ko:"SVG",en:"SVG",cat:"개발",desc:"벡터 기반 이미지 형식. 크기를 늘려도 깨지지 않아 아이콘·로고·다이어그램에 사용. HTML 내에 코드로 삽입 가능."},
+  {ko:"PWA",en:"Progressive Web App",cat:"개발",desc:"웹 기술로 만들었지만 앱처럼 설치·작동하는 서비스. 오프라인 지원, 푸시 알림 등 네이티브 앱 기능 제공."},
+  {ko:"SPA",en:"Single Page Application",cat:"개발",desc:"페이지 전환 없이 단일 HTML 파일에서 동적으로 콘텐츠를 업데이트하는 웹 앱 방식. React, Vue 기반 앱이 대표적."},
+  {ko:"SSR",en:"Server-Side Rendering",cat:"개발",desc:"서버에서 HTML을 완성해 브라우저에 전달하는 방식. 초기 로딩 속도와 SEO에 유리."},
+  {ko:"CI/CD",en:"CI/CD",cat:"개발",desc:"코드 변경 시 자동으로 테스트·빌드·배포하는 파이프라인. GitHub Actions가 대표적."},
+  {ko:"테스트",en:"Testing",cat:"개발",desc:"코드가 의도대로 작동하는지 검증하는 과정. 단위 테스트, 통합 테스트, E2E 테스트 등이 있음."},
+  {ko:"리포지토리",en:"Repository (Repo)",cat:"개발",desc:"Git으로 관리되는 프로젝트 코드 저장소. GitHub에서 하나의 프로젝트 = 하나의 리포지토리."},
+  {ko:"브랜치",en:"Branch",cat:"개발",desc:"메인 코드에서 분기해 독립적으로 작업하는 흐름. 기능 개발이나 실험을 메인에 영향 없이 진행 가능."},
+  {ko:"커밋",en:"Commit",cat:"개발",desc:"변경 내용을 Git에 저장하는 행위. 작업 단위마다 커밋해두면 언제든 이전 상태로 복귀 가능."},
+  {ko:"풀 리퀘스트",en:"Pull Request (PR)",cat:"개발",desc:"브랜치의 변경 내용을 메인 브랜치에 합치자고 제안하는 것. 코드 리뷰의 핵심 단계."},
+  {ko:"머지",en:"Merge",cat:"개발",desc:"두 브랜치의 변경 내용을 하나로 합치는 작업."},
+  {ko:"포크",en:"Fork",cat:"개발",desc:"다른 사람의 GitHub 저장소를 내 계정으로 복사하는 것. 오픈소스에 기여하거나 기반으로 새 프로젝트를 만들 때 사용."},
+  {ko:"클론",en:"Clone",cat:"개발",desc:"원격 저장소(GitHub)를 내 컴퓨터로 복사해오는 명령. git clone URL 형식으로 사용."},
 
-const SEED_DATA = [
-  {term:"API", sub:"Application Programming Interface", desc:"프로그램끼리 대화하는 통로. 예: 날씨 앱이 기상청 데이터를 가져올 때 사용", cat:"dev"},
-  {term:"CLI", sub:"Command Line Interface", desc:"마우스 없이 키보드 명령어로만 컴퓨터를 조작하는 방식. 예: 터미널, CMD", cat:"tool"},
-  {term:"CSS", sub:"Cascading Style Sheets", desc:"웹페이지의 색상, 글꼴, 레이아웃 등 디자인을 담당하는 언어", cat:"dev"},
-  {term:"CRUD", sub:"Create Read Update Delete", desc:"데이터의 기본 4가지 동작(생성, 조회, 수정, 삭제). 앱의 핵심 기능", cat:"basic"},
-  {term:"DB", sub:"Database", desc:"데이터를 체계적으로 저장하는 창고. 엑셀 시트와 비슷하지만 훨씬 강력함", cat:"basic"},
-  {term:"Debug", sub:"Debugging", desc:"코드의 오류(버그)를 찾아 고치는 작업", cat:"basic"},
-  {term:"Deploy", sub:"Deployment", desc:"만든 앱을 인터넷에 올려 누구나 쓸 수 있게 하는 것. 한국어로 배포", cat:"basic"},
-  {term:"DOM", sub:"Document Object Model", desc:"브라우저가 HTML을 트리 구조로 이해하는 방식. JS로 화면 요소를 조작할 때 사용", cat:"dev"},
-  {term:"ENV", sub:"Environment Variable", desc:"코드에 직접 쓰지 않고 별도 파일에 보관하는 설정값. 예: API 키, 비밀번호", cat:"dev"},
-  {term:"FE / BE", sub:"Frontend / Backend", desc:"FE는 사용자가 보는 화면, BE는 서버에서 돌아가는 로직과 데이터 처리", cat:"basic"},
-  {term:"Framework", sub:"", desc:"자주 쓰는 기능을 미리 묶어 둔 틀. 예: Next.js, React, Django", cat:"tool"},
-  {term:"Git", sub:"", desc:"코드 변경 이력을 관리하는 도구. 저장과 타임머신 역할을 함", cat:"tool"},
-  {term:"GitHub", sub:"", desc:"Git 저장소를 인터넷에 올려 협업하는 플랫폼", cat:"tool"},
-  {term:"HTML", sub:"HyperText Markup Language", desc:"웹페이지의 뼈대를 만드는 언어. 제목, 문단, 이미지 등을 정의", cat:"dev"},
-  {term:"HTTP/HTTPS", sub:"HyperText Transfer Protocol (Secure)", desc:"브라우저와 서버가 데이터를 주고받는 규칙. S는 암호화를 의미", cat:"dev"},
-  {term:"IDE", sub:"Integrated Development Environment", desc:"코드 작성, 실행, 디버그를 한 곳에서 할 수 있는 프로그램. 예: Cursor, VS Code", cat:"tool"},
-  {term:"JSON", sub:"JavaScript Object Notation", desc:"데이터를 주고받는 표준 형식. 키와 값의 구조로 이루어짐", cat:"dev"},
-  {term:"JS", sub:"JavaScript", desc:"웹 브라우저를 동적으로 만드는 프로그래밍 언어", cat:"dev"},
-  {term:"LLM", sub:"Large Language Model", desc:"ChatGPT, Claude 같은 거대 AI 언어 모델. 바이브 코딩의 핵심 엔진", cat:"ai"},
-  {term:"MCP", sub:"Model Context Protocol", desc:"AI가 외부 도구(파일, DB 등)와 연결되도록 Anthropic이 만든 표준 규약", cat:"ai"},
-  {term:"MVP", sub:"Minimum Viable Product", desc:"핵심 기능만 담은 최소 버전 앱. 일단 만들고 개선하는 전략", cat:"basic"},
-  {term:"npm", sub:"Node Package Manager", desc:"Node.js용 라이브러리 설치, 관리 도구. 앱 재료를 가져오는 마트", cat:"tool"},
-  {term:"PR", sub:"Pull Request", desc:"내가 수정한 코드를 팀 프로젝트에 합치자고 요청하는 것", cat:"dev"},
-  {term:"Prompt", sub:"", desc:"AI에게 내리는 지시문. 잘 쓸수록 결과가 좋아짐", cat:"ai"},
-  {term:"RAG", sub:"Retrieval-Augmented Generation", desc:"AI가 외부 문서를 검색해서 답변 품질을 높이는 기법", cat:"ai"},
-  {term:"Refactor", sub:"", desc:"기능은 그대로 두고 코드 구조를 더 깔끔하게 다듬는 작업", cat:"dev"},
-  {term:"Repo", sub:"Repository", desc:"코드를 저장, 관리하는 폴더. GitHub의 기본 단위", cat:"tool"},
-  {term:"REST", sub:"Representational State Transfer", desc:"API를 설계하는 가장 대중적인 방식. URL로 자원을 표현", cat:"dev"},
-  {term:"SDK", sub:"Software Development Kit", desc:"특정 서비스를 쓰기 편하게 묶은 도구 모음. 예: Anthropic SDK", cat:"tool"},
-  {term:"SQL", sub:"Structured Query Language", desc:"데이터베이스에서 데이터를 조회, 수정하는 언어", cat:"dev"},
-  {term:"SaaS", sub:"Software as a Service", desc:"설치 없이 인터넷으로 쓰는 소프트웨어. 예: Notion, Figma, Claude.ai", cat:"basic"},
-  {term:"Token", sub:"", desc:"LLM이 텍스트를 처리하는 단위. 대략 한글 1글자는 2~3토큰이며 비용과 직결", cat:"ai"},
-  {term:"UI/UX", sub:"User Interface / User Experience", desc:"UI는 화면 구성요소, UX는 사용자가 느끼는 전체 경험", cat:"basic"},
-  {term:"URL", sub:"Uniform Resource Locator", desc:"인터넷 주소. 예: https://claude.ai", cat:"basic"},
-  {term:"Vibe Coding", sub:"", desc:"자연어 지시만으로 AI가 코드를 짜는 새로운 개발 방식", cat:"ai"},
-  {term:"VS Code", sub:"Visual Studio Code", desc:"Microsoft의 무료 코드 편집기. Cursor의 기반", cat:"tool"},
-
-  {term:"가상환경", sub:"", desc:"Python 프로젝트별로 라이브러리를 격리해 충돌을 막는 독립 공간. venv로 생성", cat:"tool"},
-  {term:"갱신(Refresh)", sub:"", desc:"화면이나 데이터를 최신 상태로 다시 불러오는 것", cat:"basic"},
-  {term:"객체(Object)", sub:"", desc:"데이터와 기능을 묶은 덩어리. 예: 고객 = 이름, 나이, 구매 기능", cat:"dev"},
-  {term:"깃허브(GitHub)", sub:"", desc:"코드 저장, 공유, 협업 플랫폼. 코드의 구글 드라이브", cat:"tool"},
-  {term:"내보내기(Export)", sub:"", desc:"데이터나 파일을 다른 형식으로 저장하는 것. 예: CSV 내보내기", cat:"basic"},
-  {term:"노드(Node.js)", sub:"", desc:"JavaScript를 브라우저 밖, 즉 서버에서 실행하게 해주는 환경", cat:"tool"},
-  {term:"다크모드", sub:"", desc:"화면 배경을 어둡게 하는 UI 설정. CSS 변수로 구현", cat:"basic"},
-  {term:"데이터베이스", sub:"", desc:"정보를 체계적으로 저장, 조회하는 시스템. 대형 엑셀과 비슷", cat:"basic"},
-  {term:"데이터 파이프라인", sub:"", desc:"데이터를 수집, 가공, 저장하는 자동화 흐름", cat:"dev"},
-  {term:"디버깅", sub:"", desc:"코드의 오류(버그)를 찾아 고치는 과정", cat:"basic"},
-  {term:"디플로이(Deploy)", sub:"", desc:"앱을 서버에 올려 외부에서 접근 가능하게 하는 배포 작업", cat:"basic"},
-  {term:"라이브러리", sub:"", desc:"자주 쓰는 코드를 묶어 재사용 가능하게 만든 패키지", cat:"tool"},
-  {term:"라우팅(Routing)", sub:"", desc:"URL 경로에 따라 다른 화면을 보여주는 기능. 예: /home으로 가면 홈화면", cat:"dev"},
-  {term:"레이아웃", sub:"", desc:"화면 요소들의 배치 구조. 헤더, 사이드바, 본문 등", cat:"basic"},
-  {term:"렌더링", sub:"", desc:"코드를 실제 화면에 그려내는 과정", cat:"dev"},
-  {term:"로컬(Local)", sub:"", desc:"내 컴퓨터 안에서만 실행되는 환경. 배포(서버)와 반대", cat:"basic"},
-  {term:"리팩토링", sub:"", desc:"기능 변경 없이 코드 구조를 정리, 개선하는 작업", cat:"dev"},
-  {term:"마크다운(Markdown)", sub:"", desc:"#, *, - 같은 기호로 서식을 표현하는 경량 문서 형식", cat:"tool"},
-  {term:"모델(AI Model)", sub:"", desc:"LLM을 가리키는 말. 예: claude-sonnet, gpt-4o", cat:"ai"},
-  {term:"미들웨어", sub:"", desc:"요청과 응답 사이에서 공통 처리를 담당하는 중간 계층", cat:"dev"},
-  {term:"배열(Array)", sub:"", desc:"여러 값을 순서대로 담는 목록. 예: 사과, 배, 감", cat:"dev"},
-  {term:"버그(Bug)", sub:"", desc:"코드의 오류. 의도와 다르게 작동하는 문제", cat:"basic"},
-  {term:"버전 관리", sub:"", desc:"코드 변경 이력을 저장해 이전 상태로 돌아갈 수 있게 하는 것", cat:"tool"},
-  {term:"변수(Variable)", sub:"", desc:"값을 저장하는 이름표. 예: 가격 = 10000", cat:"dev"},
-  {term:"보일러플레이트", sub:"", desc:"프로젝트 시작 시 반복적으로 필요한 기본 코드 틀", cat:"dev"},
-  {term:"빌드(Build)", sub:"", desc:"소스 코드를 실행 가능한 형태로 변환하는 과정", cat:"dev"},
-  {term:"서버(Server)", sub:"", desc:"요청을 받아 처리하고 응답을 보내는 컴퓨터 또는 프로그램", cat:"basic"},
-  {term:"스키마(Schema)", sub:"", desc:"데이터베이스 테이블의 구조 설계도. 컬럼명과 타입을 정의", cat:"dev"},
-  {term:"스타일링", sub:"", desc:"CSS로 화면 디자인을 꾸미는 작업", cat:"dev"},
-  {term:"스택(Stack)", sub:"", desc:"프로젝트에 사용하는 기술 조합. 예: React + Node + PostgreSQL", cat:"tool"},
-  {term:"스캐폴딩", sub:"", desc:"프로젝트 기본 구조를 자동으로 생성해주는 기능", cat:"tool"},
-  {term:"에러 핸들링", sub:"", desc:"오류가 발생했을 때 앱이 멈추지 않도록 처리하는 로직", cat:"dev"},
-  {term:"엔드포인트", sub:"", desc:"API가 요청을 받는 특정 URL 주소. 예: /api/login", cat:"dev"},
-  {term:"인증(Auth)", sub:"", desc:"사용자가 누구인지 확인하는 과정. 로그인, JWT 등", cat:"dev"},
-  {term:"임베딩(Embedding)", sub:"", desc:"텍스트를 숫자 벡터로 변환해 AI가 의미를 이해하게 하는 기술", cat:"ai"},
-  {term:"자연어", sub:"", desc:"일상적으로 쓰는 사람의 언어. 바이브 코딩의 입력 수단", cat:"ai"},
-  {term:"저장소(Repository)", sub:"", desc:"코드 파일 전체를 관리하는 폴더. GitHub의 기본 단위", cat:"tool"},
-  {term:"컴포넌트", sub:"", desc:"재사용 가능한 UI 조각. 예: 버튼, 카드, 헤더", cat:"dev"},
-  {term:"컨텍스트 창", sub:"", desc:"AI가 한 번에 기억할 수 있는 텍스트 범위. 토큰 수로 제한됨", cat:"ai"},
-  {term:"콘솔(Console)", sub:"", desc:"코드 실행 결과나 오류 메시지를 출력하는 개발자 화면", cat:"tool"},
-  {term:"쿼리(Query)", sub:"", desc:"데이터베이스나 API에 원하는 데이터를 요청하는 명령", cat:"dev"},
-  {term:"클라우드", sub:"", desc:"인터넷을 통해 서버, 저장소를 빌려 쓰는 서비스. 예: AWS, Vercel", cat:"tool"},
-  {term:"토큰(Token)", sub:"", desc:"LLM이 텍스트를 처리하는 최소 단위. 비용과 직결됨", cat:"ai"},
-  {term:"트리거(Trigger)", sub:"", desc:"특정 조건이 발생했을 때 자동으로 실행되는 동작", cat:"dev"},
-  {term:"파이썬(Python)", sub:"", desc:"AI, 데이터 분야에서 가장 널리 쓰이는 프로그래밍 언어", cat:"tool"},
-  {term:"패키지(Package)", sub:"", desc:"라이브러리를 설치 가능한 형태로 묶은 것. npm install로 가져옴", cat:"tool"},
-  {term:"페이로드(Payload)", sub:"", desc:"API 요청, 응답 시 실제로 전송되는 데이터 본문", cat:"dev"},
-  {term:"포크(Fork)", sub:"", desc:"다른 사람의 GitHub 저장소를 내 계정으로 복사하는 것", cat:"tool"},
-  {term:"프레임워크", sub:"", desc:"앱 개발의 기본 틀을 제공하는 도구. 예: Next.js, FastAPI", cat:"tool"},
-  {term:"프롬프트 엔지니어링", sub:"", desc:"AI에게 더 좋은 결과를 얻도록 지시문을 설계하는 기술", cat:"ai"},
-  {term:"함수(Function)", sub:"", desc:"특정 동작을 수행하는 코드 묶음. 필요할 때마다 호출해 사용", cat:"dev"},
-  {term:"핫리로드(Hot Reload)", sub:"", desc:"코드를 저장하면 앱이 자동으로 새로고침되는 개발 편의 기능", cat:"tool"},
-  {term:"호스팅", sub:"", desc:"앱이나 웹사이트를 서버에 올려두는 서비스. 예: Vercel, Netlify", cat:"tool"}
+  // ════ AI ════
+  {ko:"거대 언어 모델",en:"Large Language Model (LLM)",cat:"AI",desc:"방대한 텍스트 데이터로 학습한 AI 모델. GPT, Claude, Gemini 등이 해당. 텍스트 생성·이해·번역 등 광범위한 작업 수행."},
+  {ko:"트랜스포머",en:"Transformer",cat:"AI",desc:"2017년 구글이 발표한 AI 아키텍처. 현재 모든 LLM의 기반이 되는 핵심 구조. 어텐션 메커니즘으로 문맥을 파악."},
+  {ko:"어텐션",en:"Attention Mechanism",cat:"AI",desc:"AI가 입력 텍스트에서 어떤 단어가 서로 관련 있는지 가중치를 부여해 문맥을 이해하는 핵심 메커니즘."},
+  {ko:"임베딩",en:"Embedding",cat:"AI",desc:"단어·문장을 숫자 벡터(좌표)로 변환하는 것. 의미가 비슷한 단어는 벡터 공간에서 가까이 위치함."},
+  {ko:"추론",en:"Inference",cat:"AI",desc:"이미 학습된 AI 모델을 실행해 결과를 얻는 과정. 학습(Training)이 끝난 모델을 실제로 '사용'하는 단계."},
+  {ko:"프롬프트 엔지니어링",en:"Prompt Engineering",cat:"AI",desc:"AI에서 원하는 결과를 얻기 위해 프롬프트를 최적화하는 기술. 명확한 지시, 예시 제공, 역할 부여 등의 기법 포함."},
+  {ko:"에이전트",en:"AI Agent",cat:"AI",desc:"스스로 목표를 세우고, 도구를 사용하며 여러 단계를 실행하는 AI 시스템. '자율적으로 일하는 AI 직원' 개념."},
+  {ko:"멀티에이전트",en:"Multi-Agent",cat:"AI",desc:"여러 AI 에이전트가 역할을 분담해 협업하는 시스템. 복잡한 작업을 병렬 처리 가능."},
+  {ko:"오케스트레이션",en:"Orchestration",cat:"AI",desc:"여러 AI 에이전트나 도구의 실행 순서와 데이터 흐름을 조율하는 것."},
+  {ko:"툴 유스",en:"Tool Use",cat:"AI",desc:"AI가 웹 검색, 코드 실행, 파일 접근 등 외부 도구를 직접 사용하는 능력. Claude의 웹 검색이 대표적."},
+  {ko:"지식 컷오프",en:"Knowledge Cutoff",cat:"AI",desc:"LLM의 학습 데이터가 끝나는 시점. 그 이후의 사건은 모름. Claude의 경우 2025년 8월."},
+  {ko:"RLHF",en:"RLHF (Reinforcement Learning from Human Feedback)",cat:"AI",desc:"AI 응답에 사람이 좋고 나쁨을 평가해 더 나은 응답을 학습시키는 방법. ChatGPT·Claude 품질 개선의 핵심 기법."},
+  {ko:"헌법 AI",en:"Constitutional AI",cat:"AI",desc:"Anthropic이 개발한 AI 안전 훈련 기법. AI에게 원칙(헌법)을 부여해 스스로 응답을 평가하고 개선하게 함."},
+  {ko:"벡터 DB",en:"Vector Database",cat:"AI",desc:"텍스트·이미지를 벡터로 변환해 저장·검색하는 DB. RAG 시스템 구현에 필수. Pinecone, Weaviate, Chroma 등."},
+  {ko:"시맨틱 검색",en:"Semantic Search",cat:"AI",desc:"키워드가 아닌 의미를 기반으로 검색하는 방식. '강아지 사진'을 검색하면 '개' 사진도 찾아줌."},
+  {ko:"GPT",en:"GPT (Generative Pre-trained Transformer)",cat:"AI",desc:"OpenAI의 LLM 시리즈. GPT-4o가 현재 최신 버전. ChatGPT의 기반 모델."},
+  {ko:"클로드",en:"Claude (모델명)",cat:"AI",desc:"Anthropic의 AI 모델. Sonnet(균형), Opus(고성능), Haiku(빠름) 등 용도별 버전 존재."},
+  {ko:"제미나이",en:"Gemini",cat:"AI",desc:"Google DeepMind의 LLM. Google 검색, Docs, Drive 등과 깊이 통합됨."},
+  {ko:"라마",en:"Llama",cat:"AI",desc:"Meta의 오픈소스 LLM 시리즈. 무료로 다운로드해 로컬 서버에서 직접 실행 가능."},
+  {ko:"로컬 LLM",en:"Local LLM",cat:"AI",desc:"클라우드 API 없이 자신의 컴퓨터에서 직접 실행하는 AI 모델. Ollama로 Llama 등을 로컬 실행 가능."},
+  {ko:"Ollama",en:"Ollama",cat:"AI",desc:"로컬 컴퓨터에서 LLM을 쉽게 실행하는 도구. 인터넷 없이도 AI를 사용 가능."},
+  {ko:"AI 안전",en:"AI Safety",cat:"AI",desc:"AI 시스템이 인간에게 해롭지 않고 의도대로 작동하도록 하는 연구 분야. Anthropic의 핵심 사명."},
+  {ko:"정렬",en:"Alignment",cat:"AI",desc:"AI의 목표와 행동을 인간의 가치관에 맞추는 것. '잘 정렬된 AI'는 사람이 원하는 대로 안전하게 행동함."},
+  {ko:"에이전틱 AI",en:"Agentic AI",cat:"AI",desc:"단순 응답을 넘어 스스로 계획하고 여러 단계의 작업을 자율 실행하는 AI 방식."},
+  {ko:"컴퓨터 유스",en:"Computer Use",cat:"AI",desc:"AI가 마우스·키보드를 제어해 컴퓨터를 직접 조작하는 기능. Claude Computer Use가 대표적."},
+  {ko:"이미지 생성 AI",en:"Image Generation AI",cat:"AI",desc:"텍스트 설명으로 이미지를 만드는 AI. DALL-E, Midjourney, Stable Diffusion, Flux 등이 있음."},
+  {ko:"텍스트 투 스피치",en:"Text-to-Speech (TTS)",cat:"AI",desc:"텍스트를 음성으로 변환하는 AI 기술. ElevenLabs, OpenAI TTS 등."},
+  {ko:"음성 인식",en:"Speech-to-Text (STT)",cat:"AI",desc:"음성을 텍스트로 변환하는 AI 기술. OpenAI Whisper가 대표적 오픈소스 모델."},
+  {ko:"랭체인",en:"LangChain",cat:"AI",desc:"LLM 기반 앱을 만드는 Python/JS 프레임워크. 체인, 에이전트, 메모리 등 고급 기능을 쉽게 구현 가능."},
+  {ko:"랭그래프",en:"LangGraph",cat:"AI",desc:"LangChain 기반의 AI 에이전트 워크플로를 그래프(노드·엣지) 구조로 설계하는 도구."},
+  {ko:"오토GPT",en:"AutoGPT",cat:"AI",desc:"목표만 주면 AI가 스스로 하위 작업을 계획하고 실행하는 자율 에이전트 시스템. AI 에이전트의 초기 선구자."},
+  {ko:"디퓨전 모델",en:"Diffusion Model",cat:"AI",desc:"노이즈에서 점진적으로 이미지를 복원하는 방식으로 그림을 생성하는 AI 모델. Stable Diffusion이 대표적."},
+  {ko:"멀티모달 AI",en:"Multimodal AI",cat:"AI",desc:"텍스트, 이미지, 음성, 영상을 함께 처리할 수 있는 AI. GPT-4o, Claude 3.5 Sonnet 등."},
+  {ko:"AI 오케스트레이터",en:"AI Orchestrator",cat:"AI",desc:"여러 AI 모델과 도구를 연결·조율하는 상위 시스템 또는 역할. 복잡한 AI 파이프라인 관리에 필요."},
+  {ko:"시스템 카드",en:"System Card",cat:"AI",desc:"AI 모델의 능력, 한계, 안전 평가 결과를 공개 문서로 정리한 것. Anthropic, OpenAI 등이 모델 출시 시 공개."},
+  {ko:"토크나이저",en:"Tokenizer",cat:"AI",desc:"텍스트를 AI가 처리하는 토큰 단위로 분리하는 도구. 한국어는 영어보다 토큰 수가 많이 소모됨."},
+  {ko:"임팩트",en:"Impact (AI 평가)",cat:"AI",desc:"AI 에이전트의 행동이 실제 세계에 미치는 영향 범위. 되돌릴 수 없는 행동일수록 영향이 크다고 봄."},
+  {ko:"프롬프트 인젝션",en:"Prompt Injection",cat:"AI",desc:"악의적인 텍스트를 입력해 AI의 동작을 조작하려는 공격 기법. AI 앱 보안의 주요 위협."},
+  {ko:"가드레일",en:"Guardrail",cat:"AI",desc:"AI가 해로운 콘텐츠를 생성하지 못하도록 설정한 안전 제한 장치."},
+  {ko:"AI 리터러시",en:"AI Literacy",cat:"AI",desc:"AI의 작동 원리, 한계, 활용법을 이해하는 능력. 현대 디지털 시대의 필수 역량으로 부상."},
+  {ko:"생성형 AI",en:"Generative AI",cat:"AI",desc:"텍스트, 이미지, 음성, 영상 등 새로운 콘텐츠를 스스로 생성하는 AI. ChatGPT, Claude, DALL-E 등."},
 ];
 
-function seedWithIds(){
-  return SEED_DATA.map((item, i) => ({ id: "s" + i, ...item }));
-}
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'vibe_glossary_v3';
+let terms = [];
+let activeFilter = '전체';
+let sortMode = 'default';
 
-function loadData(){
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (raw){
-    try { return JSON.parse(raw); } catch(e){}
+function load() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    terms = JSON.parse(saved);
+  } else {
+    terms = DEFAULT_TERMS.map((t, i) => ({ ...t, id: i, isNew: false }));
+    save();
   }
-  return seedWithIds();
 }
 
-let data = loadData();
-let state = { search:"", cat:"all", sort:"category" };
-let editingId = null;
-
-function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-
-function escapeHtml(str){
-  const div = document.createElement("div");
-  div.textContent = str || "";
-  return div.innerHTML;
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(terms));
 }
 
-function render(){
-  let items = data.filter(item => {
-    if (state.cat !== "all" && item.cat !== state.cat) return false;
-    if (state.sort === "kr" && getType(item.term) !== "kr") return false;
-    if (state.sort === "en" && getType(item.term) !== "en") return false;
-    if (state.search){
-      const q = state.search.toLowerCase();
-      return item.term.toLowerCase().includes(q)
-        || (item.sub||"").toLowerCase().includes(q)
-        || item.desc.toLowerCase().includes(q);
-    }
-    return true;
-  });
+function resetToDefault() {
+  if (!confirm('기본 용어집으로 초기화하시겠습니까? 추가한 용어가 삭제됩니다.')) return;
+  terms = DEFAULT_TERMS.map((t, i) => ({ ...t, id: i, isNew: false }));
+  save();
+  render();
+}
 
-  document.getElementById("countLabel").textContent = `총 ${data.length}개 중 ${items.length}개 표시`;
+// ─── FILTER / SORT ───────────────────────────────────────────────────────────
+const CATS = ['전체', '기초', '도구', '개발', 'AI'];
 
-  const listEl = document.getElementById("termList");
-  listEl.innerHTML = "";
+function setFilter(cat) {
+  activeFilter = cat;
+  render();
+}
 
-  if (items.length === 0){
-    listEl.innerHTML = '<p class="empty">검색 결과가 없어요.</p>';
+function setSort(mode) {
+  sortMode = mode;
+  ['default', 'ko', 'en'].forEach(m => document.getElementById('sort-' + m).classList.toggle('active', m === mode));
+  render();
+}
+
+function getFiltered() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  let list = terms;
+  if (activeFilter !== '전체') list = list.filter(t => t.cat === activeFilter);
+  if (q) list = list.filter(t =>
+    t.ko.toLowerCase().includes(q) ||
+    (t.en || '').toLowerCase().includes(q) ||
+    t.desc.toLowerCase().includes(q)
+  );
+  if (sortMode === 'ko') list = [...list].sort((a, b) => a.ko.localeCompare(b.ko, 'ko'));
+  if (sortMode === 'en') list = [...list].sort((a, b) => (a.en || '').localeCompare(b.en || ''));
+  return list;
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render() {
+  const filtered = getFiltered();
+  const grid = document.getElementById('grid');
+  const info = document.getElementById('resultsInfo');
+
+  // stat bar
+  const total = terms.length;
+  const counts = {};
+  CATS.slice(1).forEach(c => counts[c] = terms.filter(t => t.cat === c).length);
+  document.getElementById('statBar').innerHTML = `
+    <div class="stat-chip">전체 <span>${total}</span>개</div>
+    ${CATS.slice(1).map(c => `<div class="stat-chip">${c} <span>${counts[c]}</span></div>`).join('')}
+  `;
+
+  // filter buttons
+  document.getElementById('filterRow').innerHTML = `
+    <button class="filter-btn ${activeFilter==='전체'?'active':''}" onclick="setFilter('전체')">전체</button>
+    ${CATS.slice(1).map(c => `
+      <button class="filter-btn cat-${c} ${activeFilter===c?'active':''}" onclick="setFilter('${c}')">${c}</button>
+    `).join('')}
+    <button class="filter-btn" onclick="resetToDefault()" style="margin-left:auto;font-size:.72rem;">↩ 초기화</button>
+  `;
+
+  info.textContent = `${filtered.length}개 용어 표시 중`;
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty">🔍 검색 결과가 없습니다.</div>';
     return;
   }
 
-  if (state.sort === "category" && state.cat === "all"){
-    CAT_ORDER.forEach(catKey => {
-      const group = items.filter(i => i.cat === catKey)
-        .sort((a,b) => a.term.localeCompare(b.term, "ko"));
-      if (group.length === 0) return;
-      const header = document.createElement("div");
-      header.className = "group-header";
-      header.style.color = CAT[catKey].color;
-      header.innerHTML = `<span class="dot" style="background:${CAT[catKey].color}"></span> ${CAT[catKey].label} (${group.length})`;
-      listEl.appendChild(header);
-      group.forEach(item => listEl.appendChild(renderCard(item)));
-    });
-  } else {
-    const locale = state.sort === "en" ? "en" : "ko";
-    items.sort((a,b) => a.term.localeCompare(b.term, locale))
-      .forEach(item => listEl.appendChild(renderCard(item)));
-  }
-}
-
-function renderCard(item){
-  const card = document.createElement("div");
-  card.className = "card " + item.cat;
-  card.addEventListener("click", () => openModal(item.id));
-  card.innerHTML = `
-    <div class="card-top">
-      <span class="term">${escapeHtml(item.term)}</span>
-      <span class="badge ${item.cat}">${CAT[item.cat].label}</span>
+  grid.innerHTML = filtered.map(t => `
+    <div class="card">
+      <div class="card-top">
+        <div>
+          <div class="term-ko">${t.ko}${t.isNew ? '<span class="new-badge">NEW</span>' : ''}</div>
+          ${t.en ? `<div class="term-en">${t.en}</div>` : ''}
+        </div>
+        <span class="cat-tag cat-${t.cat}">${t.cat}</span>
+      </div>
+      <div class="desc">${t.desc}</div>
     </div>
-    ${item.sub ? `<div class="sub">${escapeHtml(item.sub)}</div>` : ""}
-    <div class="desc">${escapeHtml(item.desc)}</div>
-  `;
-  return card;
+  `).join('');
 }
 
-// 검색
-document.getElementById("searchInput").addEventListener("input", e => {
-  state.search = e.target.value.trim();
-  render();
-});
-
-// 카테고리 필터 칩
-document.getElementById("chipRow").addEventListener("click", e => {
-  const chip = e.target.closest(".chip");
-  if (!chip) return;
-  document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
-  chip.classList.add("active");
-  state.cat = chip.dataset.cat;
-  render();
-});
-
-// 정렬 방식
-document.querySelectorAll(".sort-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".sort-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    state.sort = btn.dataset.sort;
-    render();
-  });
-});
-
-// 모달 열기 / 닫기
-const overlay = document.getElementById("overlay");
-const form = document.getElementById("termForm");
-
-function openModal(id){
-  editingId = id || null;
-  const item = id ? data.find(d => d.id === id) : null;
-  document.getElementById("modalTitle").textContent = item ? "용어 수정" : "새 용어 추가";
-  form.term.value = item ? item.term : "";
-  form.sub.value = item ? item.sub : "";
-  form.desc.value = item ? item.desc : "";
-  form.cat.value = item ? item.cat : "basic";
-  document.getElementById("deleteBtn").style.display = item ? "block" : "none";
-  overlay.classList.remove("hidden");
+// ─── ADD TERM ────────────────────────────────────────────────────────────────
+function openModal() {
+  document.getElementById('modalOverlay').classList.add('open');
 }
-
-function closeModal(){
-  overlay.classList.add("hidden");
-  editingId = null;
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  ['f-ko','f-en','f-desc'].forEach(id => document.getElementById(id).value = '');
 }
-
-document.getElementById("addBtn").addEventListener("click", () => openModal(null));
-document.getElementById("cancelBtn").addEventListener("click", closeModal);
-overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
-
-// 저장 (추가/수정)
-form.addEventListener("submit", e => {
-  e.preventDefault();
-  const term = form.term.value.trim();
-  const desc = form.desc.value.trim();
-  if (!term || !desc) return;
-  const obj = { term, sub: form.sub.value.trim(), desc, cat: form.cat.value };
-
-  if (editingId){
-    const idx = data.findIndex(d => d.id === editingId);
-    data[idx] = { ...data[idx], ...obj };
-  } else {
-    data.push({ id: "u" + Date.now(), ...obj });
-  }
+function addTerm() {
+  const ko = document.getElementById('f-ko').value.trim();
+  const en = document.getElementById('f-en').value.trim();
+  const desc = document.getElementById('f-desc').value.trim();
+  const cat = document.getElementById('f-cat').value;
+  if (!ko || !desc) { alert('용어와 설명을 입력하세요.'); return; }
+  const maxId = terms.reduce((m, t) => Math.max(m, t.id || 0), 0);
+  terms.unshift({ id: maxId + 1, ko, en, desc, cat, isNew: true });
   save();
   closeModal();
+  activeFilter = '전체';
   render();
-});
+}
 
-// 삭제
-document.getElementById("deleteBtn").addEventListener("click", () => {
-  if (!editingId) return;
-  if (!confirm("이 용어를 삭제할까요?")) return;
-  data = data.filter(d => d.id !== editingId);
-  save();
-  closeModal();
-  render();
-});
-
-// 기본 용어집으로 초기화
-document.getElementById("resetLink").addEventListener("click", () => {
-  if (!confirm("내가 추가/수정한 내용이 모두 사라지고 기본 87개 용어집으로 돌아갑니다. 계속할까요?")) return;
-  data = seedWithIds();
-  save();
-  render();
-});
-
+// ─── INIT ────────────────────────────────────────────────────────────────────
+load();
 render();
 </script>
 </body>

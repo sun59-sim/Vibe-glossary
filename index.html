@@ -136,15 +136,63 @@
   .spinner { width: 12px; height: 12px; border: 2px solid rgba(56,189,248,.3); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; display: inline-block; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
+  /* API 키 설정 */
+  .header-setting {
+    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-muted); border-radius: 8px;
+    padding: 4px 10px; font-size: 0.72rem; cursor: pointer;
+    transition: all .18s;
+  }
+  .header-setting:hover { border-color: var(--accent); color: var(--accent); }
+  .header-setting.key-ok { border-color: #34d399; color: #34d399; }
+  .key-notice {
+    font-size: 0.72rem; background: rgba(251,146,60,.1);
+    border: 1px solid rgba(251,146,60,.3); color: #fb923c;
+    border-radius: 8px; padding: 7px 12px; margin-bottom: 10px; line-height: 1.5;
+  }
+  .key-notice a { color: #fb923c; }
+  .key-input-wrap { position: relative; }
+  .key-input-wrap input { padding-right: 60px; font-family: monospace; font-size: 0.8rem; }
+  .btn-toggle-key {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: transparent; border: none; color: var(--text-muted);
+    cursor: pointer; font-size: 0.78rem; padding: 2px 4px;
+  }
+
   @media(max-width:520px){ .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<header>
+<header style="position:relative;">
   <h1>🧑‍💻 바이브 코딩 용어집</h1>
   <div class="subtitle">IT · AI · 개발 · 보안 · 데이터 필수 용어 사전</div>
   <div class="stat-bar" id="statBar"></div>
+  <button class="header-setting" id="btnKeySetting" onclick="openKeySetting()" title="Anthropic API 키 설정">⚙️ API 키</button>
 </header>
+
+<!-- API 키 설정 모달 -->
+<div class="modal-overlay" id="keyModalOverlay">
+  <div class="modal">
+    <h2>⚙️ Anthropic API 키 설정</h2>
+    <div class="key-notice">
+      AI 자동완성을 외부 기기(PC·스마트폰)에서 사용하려면<br>
+      Anthropic API 키가 필요해요.<br>
+      키는 이 기기의 브라우저에만 저장되며 외부로 전송되지 않습니다.<br>
+      👉 <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> 에서 발급
+    </div>
+    <label>API 키 (sk-ant-... 형식)</label>
+    <div class="key-input-wrap">
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-...">
+      <button class="btn-toggle-key" onclick="toggleKeyVis()" id="btnToggleKey">보기</button>
+    </div>
+    <div class="ai-status" id="keyStatus"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeKeySetting()">취소</button>
+      <button class="btn-save" onclick="saveApiKey()">저장</button>
+    </div>
+  </div>
+</div>
 
 <div class="controls">
   <div class="search-wrap">
@@ -782,6 +830,58 @@ function deleteTerm(id) {
   terms = terms.filter(t => t.id !== id);
   save(); render();
 }
+// ── API 키 설정 ───────────────────────────────────────
+const API_KEY_STORAGE = 'vibe_glossary_apikey';
+
+function getApiKey() {
+  return localStorage.getItem(API_KEY_STORAGE) || '';
+}
+function updateKeyBtn() {
+  const btn = document.getElementById('btnKeySetting');
+  if (!btn) return;
+  if (getApiKey()) {
+    btn.textContent = '✅ API 키';
+    btn.className = 'header-setting key-ok';
+  } else {
+    btn.textContent = '⚙️ API 키';
+    btn.className = 'header-setting';
+  }
+}
+function openKeySetting() {
+  document.getElementById('apiKeyInput').value = getApiKey();
+  document.getElementById('keyStatus').textContent = '';
+  document.getElementById('keyModalOverlay').classList.add('open');
+}
+function closeKeySetting() {
+  document.getElementById('keyModalOverlay').classList.remove('open');
+}
+function toggleKeyVis() {
+  const inp = document.getElementById('apiKeyInput');
+  const btn = document.getElementById('btnToggleKey');
+  if (inp.type === 'password') { inp.type = 'text';  btn.textContent = '숨김'; }
+  else                         { inp.type = 'password'; btn.textContent = '보기'; }
+}
+function saveApiKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  const status = document.getElementById('keyStatus');
+  if (key && !key.startsWith('sk-ant-')) {
+    status.className = 'ai-status error';
+    status.textContent = '❌ 올바른 Anthropic API 키 형식이 아닙니다 (sk-ant-... 로 시작해야 함)';
+    return;
+  }
+  if (key) {
+    localStorage.setItem(API_KEY_STORAGE, key);
+    status.className = 'ai-status';
+    status.textContent = '✅ 저장되었습니다!';
+  } else {
+    localStorage.removeItem(API_KEY_STORAGE);
+    status.className = 'ai-status';
+    status.textContent = '🗑️ API 키가 삭제되었습니다.';
+  }
+  updateKeyBtn();
+  setTimeout(closeKeySetting, 1200);
+}
+
 // ── AI 자동완성 ──────────────────────────────────────
 function onKoInput() {
   document.getElementById('aiStatus').textContent = '';
@@ -791,6 +891,14 @@ function onKoInput() {
 async function aiAutoFill() {
   const ko = document.getElementById('f-ko').value.trim();
   if (!ko) { alert('용어명을 먼저 입력하세요.'); return; }
+
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    const status = document.getElementById('aiStatus');
+    status.className = 'ai-status error';
+    status.innerHTML = '❌ API 키가 없습니다. 우측 상단 <b>⚙️ API 키</b> 버튼에서 먼저 설정하세요.';
+    return;
+  }
 
   const btn = document.getElementById('btnAI');
   const status = document.getElementById('aiStatus');
@@ -811,7 +919,12 @@ async function aiAutoFill() {
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 300,
@@ -843,7 +956,7 @@ async function aiAutoFill() {
   }
 }
 // ────────────────────────────────────────────────────
-load(); render();
+load(); render(); updateKeyBtn();
 </script>
 </body>
 </html>

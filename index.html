@@ -122,77 +122,15 @@
 
   .modal h2.edit-mode { color: var(--accent2); }
 
-  .ai-row { display: flex; gap: 6px; margin-bottom: 10px; }
-  .ai-row input { flex: 1; margin-bottom: 0; }
-  .btn-ai {
-    padding: 8px 13px; border-radius: 8px; border: none;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #0f172a; font-size: 0.8rem; font-weight: 700;
-    cursor: pointer; white-space: nowrap; transition: opacity .2s; flex-shrink: 0;
-  }
-  .btn-ai:disabled { opacity: .5; cursor: not-allowed; }
-  .ai-status { font-size: 0.74rem; color: var(--accent); margin-bottom: 8px; min-height: 18px; display: flex; align-items: center; gap: 5px; }
-  .ai-status.error { color: var(--tag-보안); }
-  .spinner { width: 12px; height: 12px; border: 2px solid rgba(56,189,248,.3); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; display: inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* API 키 설정 */
-  .header-setting {
-    position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
-    background: transparent; border: 1px solid var(--border);
-    color: var(--text-muted); border-radius: 8px;
-    padding: 4px 10px; font-size: 0.72rem; cursor: pointer;
-    transition: all .18s;
-  }
-  .header-setting:hover { border-color: var(--accent); color: var(--accent); }
-  .header-setting.key-ok { border-color: #34d399; color: #34d399; }
-  .key-notice {
-    font-size: 0.72rem; background: rgba(251,146,60,.1);
-    border: 1px solid rgba(251,146,60,.3); color: #fb923c;
-    border-radius: 8px; padding: 7px 12px; margin-bottom: 10px; line-height: 1.5;
-  }
-  .key-notice a { color: #fb923c; }
-  .key-input-wrap { position: relative; }
-  .key-input-wrap input { padding-right: 60px; font-family: monospace; font-size: 0.8rem; }
-  .btn-toggle-key {
-    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-    background: transparent; border: none; color: var(--text-muted);
-    cursor: pointer; font-size: 0.78rem; padding: 2px 4px;
-  }
-
   @media(max-width:520px){ .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-<header style="position:relative;">
+<header>
   <h1>🧑‍💻 바이브 코딩 용어집</h1>
   <div class="subtitle">IT · AI · 개발 · 보안 · 데이터 필수 용어 사전</div>
   <div class="stat-bar" id="statBar"></div>
-  <button class="header-setting" id="btnKeySetting" onclick="openKeySetting()" title="Anthropic API 키 설정">⚙️ API 키</button>
 </header>
-
-<!-- API 키 설정 모달 -->
-<div class="modal-overlay" id="keyModalOverlay">
-  <div class="modal">
-    <h2>⚙️ Anthropic API 키 설정</h2>
-    <div class="key-notice">
-      AI 자동완성을 외부 기기(PC·스마트폰)에서 사용하려면<br>
-      Anthropic API 키가 필요해요.<br>
-      키는 이 기기의 브라우저에만 저장되며 외부로 전송되지 않습니다.<br>
-      👉 <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> 에서 발급
-    </div>
-    <label>API 키 (sk-ant-... 형식)</label>
-    <div class="key-input-wrap">
-      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-...">
-      <button class="btn-toggle-key" onclick="toggleKeyVis()" id="btnToggleKey">보기</button>
-    </div>
-    <div class="ai-status" id="keyStatus"></div>
-    <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeKeySetting()">취소</button>
-      <button class="btn-save" onclick="saveApiKey()">저장</button>
-    </div>
-  </div>
-</div>
 
 <div class="controls">
   <div class="search-wrap">
@@ -215,20 +153,12 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <h2 id="modalTitle">➕ 새 용어 추가</h2>
-
-    <!-- AI 자동완성 영역 -->
-    <label>🤖 용어명 입력 후 AI 자동완성</label>
-    <div class="ai-row">
-      <input type="text" id="f-ko" placeholder="예: 도커, Kubernetes, 양자컴퓨팅..."
-        oninput="onKoInput()" onkeydown="if(event.key==='Enter') aiAutoFill()">
-      <button class="btn-ai" id="btnAI" onclick="aiAutoFill()">✨ AI 완성</button>
-    </div>
-    <div class="ai-status" id="aiStatus"></div>
-
+    <label>용어 (한글)</label>
+    <input type="text" id="f-ko" placeholder="예: 도커, 쿠버네티스...">
     <label>원어 / 영문 (선택)</label>
     <input type="text" id="f-en" placeholder="예: Docker">
     <label>설명</label>
-    <textarea id="f-desc" placeholder="AI 자동완성 또는 직접 입력..."></textarea>
+    <textarea id="f-desc" placeholder="설명을 직접 입력하세요..."></textarea>
     <label>카테고리</label>
     <select id="f-cat">
       <option value="기초">기초</option>
@@ -830,140 +760,8 @@ function deleteTerm(id) {
   terms = terms.filter(t => t.id !== id);
   save(); render();
 }
-// ── API 키 설정 ───────────────────────────────────────
-const API_KEY_STORAGE = 'vibe_glossary_apikey';
-
-function getApiKey() {
-  return localStorage.getItem(API_KEY_STORAGE) || '';
-}
-function updateKeyBtn() {
-  const btn = document.getElementById('btnKeySetting');
-  if (!btn) return;
-  if (getApiKey()) {
-    btn.textContent = '✅ API 키';
-    btn.className = 'header-setting key-ok';
-  } else {
-    btn.textContent = '⚙️ API 키';
-    btn.className = 'header-setting';
-  }
-}
-function openKeySetting() {
-  document.getElementById('apiKeyInput').value = getApiKey();
-  document.getElementById('keyStatus').textContent = '';
-  document.getElementById('keyModalOverlay').classList.add('open');
-}
-function closeKeySetting() {
-  document.getElementById('keyModalOverlay').classList.remove('open');
-}
-function toggleKeyVis() {
-  const inp = document.getElementById('apiKeyInput');
-  const btn = document.getElementById('btnToggleKey');
-  if (inp.type === 'password') { inp.type = 'text';  btn.textContent = '숨김'; }
-  else                         { inp.type = 'password'; btn.textContent = '보기'; }
-}
-function saveApiKey() {
-  const key = document.getElementById('apiKeyInput').value.trim();
-  const status = document.getElementById('keyStatus');
-  if (key && !key.startsWith('sk-ant-')) {
-    status.className = 'ai-status error';
-    status.textContent = '❌ 올바른 Anthropic API 키 형식이 아닙니다 (sk-ant-... 로 시작해야 함)';
-    return;
-  }
-  if (key) {
-    localStorage.setItem(API_KEY_STORAGE, key);
-    status.className = 'ai-status';
-    status.textContent = '✅ 저장되었습니다!';
-  } else {
-    localStorage.removeItem(API_KEY_STORAGE);
-    status.className = 'ai-status';
-    status.textContent = '🗑️ API 키가 삭제되었습니다.';
-  }
-  updateKeyBtn();
-  setTimeout(closeKeySetting, 1200);
-}
-
-// ── AI 자동완성 ──────────────────────────────────────
-function onKoInput() {
-  document.getElementById('aiStatus').textContent = '';
-  document.getElementById('aiStatus').className = 'ai-status';
-}
-
-async function aiAutoFill() {
-  const ko = document.getElementById('f-ko').value.trim();
-  if (!ko) { alert('용어명을 먼저 입력하세요.'); return; }
-
-  // Claude.ai 내부 환경 감지 (API 키 불필요)
-  const isInsideClaude = location.hostname.includes('claude.ai') ||
-                         location.hostname === 'localhost' ||
-                         location.protocol === 'blob:' ||
-                         location.hostname === '';
-
-  const apiKey = getApiKey();
-  if (!isInsideClaude && !apiKey) {
-    const status = document.getElementById('aiStatus');
-    status.className = 'ai-status error';
-    status.innerHTML = '❌ API 키가 없습니다. 우측 상단 <b>⚙️ API 키</b> 버튼에서 먼저 설정하세요.';
-    return;
-  }
-
-  const btn = document.getElementById('btnAI');
-  const status = document.getElementById('aiStatus');
-  btn.disabled = true;
-  status.className = 'ai-status';
-  status.innerHTML = '<span class="spinner"></span> Claude가 설명을 작성 중...';
-
-  const CATS_LIST = '기초, 도구, 개발, AI, 보안, 데이터';
-  const systemPrompt = `당신은 IT·AI·바이브코딩 용어집 전문 편집자입니다.
-사용자가 용어를 입력하면 반드시 아래 JSON 형식으로만 응답하세요. 다른 텍스트는 절대 포함하지 마세요.
-
-{
-  "en": "영문 원어 또는 약어 (없으면 빈 문자열)",
-  "cat": "카테고리 (${CATS_LIST} 중 하나만)",
-  "desc": "한국어 설명 (2-3문장, 80자 내외, IT 비전공자도 이해할 수 있게 쉽고 구체적으로)"
-}`;
-
-  try {
-    const headers = { 'Content-Type': 'application/json' };
-    if (!isInsideClaude && apiKey) {
-      headers['x-api-key'] = apiKey;
-      headers['anthropic-version'] = '2023-06-01';
-      headers['anthropic-dangerous-direct-browser-access'] = 'true';
-    }
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 300,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: `용어: ${ko}` }]
-      })
-    });
-
-    const data = await res.json();
-    if (data.error) throw new Error(data.error.message);
-
-    const raw = data.content.map(b => b.text || '').join('').trim();
-    const clean = raw.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
-
-    document.getElementById('f-en').value   = parsed.en   || '';
-    document.getElementById('f-desc').value = parsed.desc || '';
-    const catEl = document.getElementById('f-cat');
-    if (parsed.cat && ['기초','도구','개발','AI','보안','데이터'].includes(parsed.cat)) {
-      catEl.value = parsed.cat;
-    }
-    status.innerHTML = '✅ 자동완성 완료! 내용을 확인 후 저장하세요.';
-
-  } catch(e) {
-    status.className = 'ai-status error';
-    status.textContent = '❌ 오류: ' + (e.message || '다시 시도해 주세요.');
-  } finally {
-    btn.disabled = false;
-  }
-}
 // ────────────────────────────────────────────────────
-load(); render(); updateKeyBtn();
+load(); render();
 </script>
 </body>
 </html>

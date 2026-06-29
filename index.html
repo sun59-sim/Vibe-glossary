@@ -111,6 +111,17 @@
   .new-badge { font-size: 0.58rem; background: #fb923c; color: #0f172a;
     padding: 1px 5px; border-radius: 20px; font-weight: 800; margin-left: 4px; vertical-align: middle; }
 
+  .card-actions { display: flex; gap: 5px; margin-top: 8px; justify-content: flex-end; }
+  .btn-edit, .btn-del {
+    padding: 3px 10px; border-radius: 6px; font-size: 0.72rem;
+    cursor: pointer; border: 1px solid var(--border); transition: all .15s; }
+  .btn-edit { background: transparent; color: var(--accent); border-color: rgba(56,189,248,.3); }
+  .btn-edit:hover { background: rgba(56,189,248,.12); border-color: var(--accent); }
+  .btn-del  { background: transparent; color: var(--tag-보안); border-color: rgba(248,113,113,.3); }
+  .btn-del:hover  { background: rgba(248,113,113,.12); border-color: var(--tag-보안); }
+
+  .modal h2.edit-mode { color: var(--accent2); }
+
   @media(max-width:520px){ .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -141,7 +152,7 @@
 
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
-    <h2>➕ 새 용어 추가</h2>
+    <h2 id="modalTitle">➕ 새 용어 추가</h2>
     <label>용어 (한글)</label>
     <input type="text" id="f-ko" placeholder="예: 버그">
     <label>원어 / 영문 (선택)</label>
@@ -159,7 +170,7 @@
     </select>
     <div class="modal-btns">
       <button class="btn-cancel" onclick="closeModal()">취소</button>
-      <button class="btn-save" onclick="addTerm()">저장</button>
+      <button class="btn-save" id="modalSaveBtn" onclick="saveTerm()">저장</button>
     </div>
   </div>
 </div>
@@ -686,22 +697,68 @@ function render() {
         <span class="cat-tag cat-${t.cat}">${t.cat}</span>
       </div>
       <div class="desc">${t.desc}</div>
+      <div class="card-actions">
+        <button class="btn-edit" onclick="openEditModal(${t.id})">✏️ 수정</button>
+        <button class="btn-del"  onclick="deleteTerm(${t.id})">🗑️ 삭제</button>
+      </div>
     </div>`).join('');
 }
-function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
+
+let editingId = null;
+
+function openModal() {
+  editingId = null;
+  document.getElementById('modalTitle').textContent = '➕ 새 용어 추가';
+  document.getElementById('modalTitle').className = '';
+  ['f-ko','f-en','f-desc'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('f-cat').value = '기초';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function openEditModal(id) {
+  const t = terms.find(t => t.id === id);
+  if (!t) return;
+  editingId = id;
+  document.getElementById('modalTitle').textContent = '✏️ 용어 수정';
+  document.getElementById('modalTitle').className = 'edit-mode';
+  document.getElementById('f-ko').value   = t.ko;
+  document.getElementById('f-en').value   = t.en || '';
+  document.getElementById('f-desc').value = t.desc;
+  document.getElementById('f-cat').value  = t.cat;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
-  ['f-ko','f-en','f-desc'].forEach(id => document.getElementById(id).value='');
+  editingId = null;
 }
-function addTerm() {
-  const ko = document.getElementById('f-ko').value.trim();
-  const en = document.getElementById('f-en').value.trim();
+
+function saveTerm() {
+  const ko   = document.getElementById('f-ko').value.trim();
+  const en   = document.getElementById('f-en').value.trim();
   const desc = document.getElementById('f-desc').value.trim();
-  const cat = document.getElementById('f-cat').value;
-  if (!ko||!desc) { alert('용어와 설명을 입력하세요.'); return; }
-  const maxId = terms.reduce((m,t)=>Math.max(m,t.id||0),0);
-  terms.unshift({id:maxId+1,ko,en,desc,cat,isNew:true}); save(); closeModal();
-  activeFilter='전체'; render();
+  const cat  = document.getElementById('f-cat').value;
+  if (!ko || !desc) { alert('용어와 설명을 입력하세요.'); return; }
+
+  if (editingId !== null) {
+    // 수정 모드
+    const idx = terms.findIndex(t => t.id === editingId);
+    if (idx !== -1) { terms[idx] = {...terms[idx], ko, en, desc, cat}; }
+  } else {
+    // 추가 모드
+    const maxId = terms.reduce((m,t) => Math.max(m, t.id||0), 0);
+    terms.unshift({id: maxId+1, ko, en, desc, cat, isNew: true});
+    activeFilter = '전체';
+  }
+  save(); closeModal(); render();
+}
+
+function deleteTerm(id) {
+  const t = terms.find(t => t.id === id);
+  if (!t) return;
+  if (!confirm(`"${t.ko}" 용어를 삭제하시겠습니까?`)) return;
+  terms = terms.filter(t => t.id !== id);
+  save(); render();
 }
 load(); render();
 </script>

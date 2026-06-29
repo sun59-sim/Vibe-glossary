@@ -892,8 +892,14 @@ async function aiAutoFill() {
   const ko = document.getElementById('f-ko').value.trim();
   if (!ko) { alert('용어명을 먼저 입력하세요.'); return; }
 
+  // Claude.ai 내부 환경 감지 (API 키 불필요)
+  const isInsideClaude = location.hostname.includes('claude.ai') ||
+                         location.hostname === 'localhost' ||
+                         location.protocol === 'blob:' ||
+                         location.hostname === '';
+
   const apiKey = getApiKey();
-  if (!apiKey) {
+  if (!isInsideClaude && !apiKey) {
     const status = document.getElementById('aiStatus');
     status.className = 'ai-status error';
     status.innerHTML = '❌ API 키가 없습니다. 우측 상단 <b>⚙️ API 키</b> 버튼에서 먼저 설정하세요.';
@@ -917,14 +923,15 @@ async function aiAutoFill() {
 }`;
 
   try {
+    const headers = { 'Content-Type': 'application/json' };
+    if (!isInsideClaude && apiKey) {
+      headers['x-api-key'] = apiKey;
+      headers['anthropic-version'] = '2023-06-01';
+      headers['anthropic-dangerous-direct-browser-access'] = 'true';
+    }
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
+      headers,
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 300,

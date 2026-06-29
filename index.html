@@ -122,6 +122,20 @@
 
   .modal h2.edit-mode { color: var(--accent2); }
 
+  .ai-row { display: flex; gap: 6px; margin-bottom: 10px; }
+  .ai-row input { flex: 1; margin-bottom: 0; }
+  .btn-ai {
+    padding: 8px 13px; border-radius: 8px; border: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #0f172a; font-size: 0.8rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap; transition: opacity .2s; flex-shrink: 0;
+  }
+  .btn-ai:disabled { opacity: .5; cursor: not-allowed; }
+  .ai-status { font-size: 0.74rem; color: var(--accent); margin-bottom: 8px; min-height: 18px; display: flex; align-items: center; gap: 5px; }
+  .ai-status.error { color: var(--tag-보안); }
+  .spinner { width: 12px; height: 12px; border: 2px solid rgba(56,189,248,.3); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   @media(max-width:520px){ .grid { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -153,12 +167,20 @@
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <h2 id="modalTitle">➕ 새 용어 추가</h2>
-    <label>용어 (한글)</label>
-    <input type="text" id="f-ko" placeholder="예: 버그">
+
+    <!-- AI 자동완성 영역 -->
+    <label>🤖 용어명 입력 후 AI 자동완성</label>
+    <div class="ai-row">
+      <input type="text" id="f-ko" placeholder="예: 도커, Kubernetes, 양자컴퓨팅..."
+        oninput="onKoInput()" onkeydown="if(event.key==='Enter') aiAutoFill()">
+      <button class="btn-ai" id="btnAI" onclick="aiAutoFill()">✨ AI 완성</button>
+    </div>
+    <div class="ai-status" id="aiStatus"></div>
+
     <label>원어 / 영문 (선택)</label>
-    <input type="text" id="f-en" placeholder="예: Bug">
+    <input type="text" id="f-en" placeholder="예: Docker">
     <label>설명</label>
-    <textarea id="f-desc" placeholder="설명을 입력하세요..."></textarea>
+    <textarea id="f-desc" placeholder="AI 자동완성 또는 직접 입력..."></textarea>
     <label>카테고리</label>
     <select id="f-cat">
       <option value="기초">기초</option>
@@ -760,6 +782,67 @@ function deleteTerm(id) {
   terms = terms.filter(t => t.id !== id);
   save(); render();
 }
+// ── AI 자동완성 ──────────────────────────────────────
+function onKoInput() {
+  document.getElementById('aiStatus').textContent = '';
+  document.getElementById('aiStatus').className = 'ai-status';
+}
+
+async function aiAutoFill() {
+  const ko = document.getElementById('f-ko').value.trim();
+  if (!ko) { alert('용어명을 먼저 입력하세요.'); return; }
+
+  const btn = document.getElementById('btnAI');
+  const status = document.getElementById('aiStatus');
+  btn.disabled = true;
+  status.className = 'ai-status';
+  status.innerHTML = '<span class="spinner"></span> Claude가 설명을 작성 중...';
+
+  const CATS_LIST = '기초, 도구, 개발, AI, 보안, 데이터';
+  const systemPrompt = `당신은 IT·AI·바이브코딩 용어집 전문 편집자입니다.
+사용자가 용어를 입력하면 반드시 아래 JSON 형식으로만 응답하세요. 다른 텍스트는 절대 포함하지 마세요.
+
+{
+  "en": "영문 원어 또는 약어 (없으면 빈 문자열)",
+  "cat": "카테고리 (${CATS_LIST} 중 하나만)",
+  "desc": "한국어 설명 (2-3문장, 80자 내외, IT 비전공자도 이해할 수 있게 쉽고 구체적으로)"
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 300,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: `용어: ${ko}` }]
+      })
+    });
+
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+
+    const raw = data.content.map(b => b.text || '').join('').trim();
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    document.getElementById('f-en').value   = parsed.en   || '';
+    document.getElementById('f-desc').value = parsed.desc || '';
+    const catEl = document.getElementById('f-cat');
+    if (parsed.cat && ['기초','도구','개발','AI','보안','데이터'].includes(parsed.cat)) {
+      catEl.value = parsed.cat;
+    }
+    status.innerHTML = '✅ 자동완성 완료! 내용을 확인 후 저장하세요.';
+
+  } catch(e) {
+    status.className = 'ai-status error';
+    status.textContent = '❌ 오류: ' + (e.message || '다시 시도해 주세요.');
+  } finally {
+    btn.disabled = false;
+  }
+}
+// ────────────────────────────────────────────────────
 load(); render();
 </script>
 </body>

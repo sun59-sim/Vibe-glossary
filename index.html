@@ -636,6 +636,33 @@ const DEFAULT_TERMS = [
 {ko:"퍼널 분석",en:"Funnel Analysis",cat:"데이터",desc:"사용자가 특정 목표(구매, 가입 등)까지 도달하는 단계별 전환율을 분석하는 방법."},
 {ko:"리텐션",en:"Retention",cat:"데이터",desc:"사용자가 서비스를 계속 사용하는 비율. Day 7 리텐션은 7일 후에도 사용하는 비율."},
 {ko:"DAU/MAU",en:"DAU/MAU",cat:"데이터",desc:"일간/월간 활성 사용자 수. 서비스의 사용자 참여도를 측정하는 핵심 지표."},
+
+  // ── SKF 2026 스트롱코리아 포럼 특별강연 관련 용어 ──
+  {ko:"피지컬 AI",en:"Physical AI",cat:"AI",desc:"디지털 세계를 넘어 로봇, 자율주행차, 드론 등 물리적 세계에서 직접 작동하는 AI. 센서로 환경을 인식하고 실제 행동을 수행함. 2025~2026년 AI의 핵심 트렌드."},
+  {ko:"HBM",en:"High Bandwidth Memory",cat:"데이터",desc:"AI 연산에 필요한 대용량 데이터를 초고속으로 처리하는 적층형 메모리 반도체. ChatGPT, Claude 등 AI 모델 학습·추론에 필수. SK하이닉스·삼성이 세계 시장 주도."},
+  {ko:"엣지 인텔리전스",en:"Edge Intelligence",cat:"AI",desc:"데이터를 중앙 클라우드로 보내지 않고 기기(엣지) 자체에서 AI 연산을 처리하는 기술. 지연 시간 감소, 개인정보 보호에 유리. 스마트폰·로봇·자율주행에 적용."},
+  {ko:"6G",en:"6th Generation Mobile Network",cat:"기초",desc:"5G의 다음 세대 이동통신 기술. 테라헤르츠 주파수를 활용해 5G보다 50배 빠른 속도와 초저지연을 목표. 피지컬 AI·자율주행·홀로그램 통신의 기반 인프라."},
+  {ko:"양자컴퓨팅",en:"Quantum Computing",cat:"AI",desc:"양자역학의 중첩·얽힘 원리를 이용해 기존 컴퓨터가 수만 년 걸릴 계산을 단시간에 처리하는 컴퓨팅 기술. 신약 개발, 암호 해독, AI 최적화 등에 활용 기대."},
+  {ko:"반도체",en:"Semiconductor",cat:"기초",desc:"전기가 잘 통하는 도체와 안 통하는 절연체의 중간 성질을 가진 물질. 트랜지스터·CPU·GPU·메모리 등 모든 전자기기의 핵심 부품."},
+  {ko:"GPU",en:"Graphics Processing Unit",cat:"기초",desc:"원래 그래픽 처리용으로 만들어진 반도체. 수천 개의 코어가 병렬 연산에 강해 AI 학습·추론의 핵심 하드웨어. NVIDIA가 시장 지배."},
+  {ko:"NPU",en:"Neural Processing Unit",cat:"AI",desc:"AI 연산(행렬 곱, 활성화 함수 등)에 특화된 반도체 칩. GPU보다 전력 효율이 높아 스마트폰·엣지 기기에 내장됨. 애플 Neural Engine, 퀄컴 Hexagon 등."},
+  {ko:"TPU",en:"Tensor Processing Unit",cat:"AI",desc:"Google이 딥러닝 연산을 위해 설계한 전용 AI 반도체. 텐서(다차원 배열) 연산에 최적화되어 있어 대규모 LLM 학습에 사용됨."},
+  {ko:"PIM",en:"Processing-In-Memory",cat:"데이터",desc:"메모리 내부에 연산 기능을 내장해 CPU-메모리 간 데이터 이동을 줄이는 기술. AI 추론의 병목인 메모리 대역폭 문제를 해결하는 차세대 반도체 구조."},
+  {ko:"파운드리",en:"Foundry",cat:"기초",desc:"반도체 설계는 하지 않고 다른 회사의 설계대로 칩을 생산·제조하는 전문 기업. TSMC, 삼성파운드리 등."},
+  {ko:"팹리스",en:"Fabless",cat:"기초",desc:"반도체 제조 공장(Fab) 없이 설계만 전문으로 하는 반도체 기업. NVIDIA, Qualcomm, ARM 등. 제조는 TSMC 등 파운드리에 위탁."},
+  {ko:"TSMC",en:"Taiwan Semiconductor Manufacturing Co.",cat:"도구",desc:"세계 최대 반도체 위탁생산(파운드리) 기업. 애플, NVIDIA, AMD 등의 칩을 생산. 2nm 이하 최첨단 공정을 독점에 가깝게 보유."},
+  {ko:"자율주행",en:"Autonomous Driving",cat:"AI",desc:"사람의 개입 없이 AI가 스스로 주행하는 기술. 카메라·라이다·레이더·GPS 등 센서를 융합해 환경을 인식하고 판단. 테슬라, 웨이모 등이 선도."},
+  {ko:"라이다",en:"LiDAR",cat:"AI",desc:"레이저 빛을 발사해 반사되는 시간으로 거리와 3D 형상을 측정하는 센서. 자율주행차와 로봇이 주변 환경을 정밀하게 파악하는 데 필수."},
+  {ko:"디지털 트윈",en:"Digital Twin",cat:"AI",desc:"실제 물리 세계의 객체(공장, 도시, 기계 등)를 가상 공간에 똑같이 복제한 디지털 모델. AI와 결합해 시뮬레이션·예측·최적화에 활용."},
+  {ko:"휴머노이드",en:"Humanoid Robot",cat:"AI",desc:"사람과 유사한 형태(머리, 팔, 다리)를 가진 로봇. Boston Dynamics의 Atlas, 테슬라 Optimus, Figure AI 등. 피지컬 AI의 핵심 응용 분야."},
+  {ko:"뉴로모픽 칩",en:"Neuromorphic Chip",cat:"AI",desc:"인간 뇌의 뉴런 구조를 모방해 설계한 반도체. 초저전력으로 AI 연산이 가능하며 IBM TrueNorth, Intel Loihi 등이 대표적."},
+  {ko:"테라헤르츠",en:"Terahertz (THz)",cat:"기초",desc:"초당 1조 번 진동하는 전자기파 주파수 대역. 6G 통신, 보안 검색, 의료 영상 등에 활용 기대. 5G의 밀리미터파보다 훨씬 높은 주파수."},
+  {ko:"ADAS",en:"Advanced Driver Assistance System",cat:"AI",desc:"자율주행의 전단계로 운전자를 보조하는 첨단 운전 지원 시스템. 차선 유지, 자동 긴급제동, 어댑티브 크루즈 컨트롤 등."},
+  {ko:"AI 반도체",en:"AI Semiconductor",cat:"AI",desc:"AI 연산(딥러닝 학습·추론)에 특화된 반도체 칩의 총칭. GPU, NPU, TPU, PIM 등이 포함됨. AI 붐과 함께 글로벌 패권 경쟁의 핵심 분야로 부상."},
+  {ko:"변곡점",en:"Inflection Point",cat:"기초",desc:"기술이나 산업의 성장 방향이 급격히 바뀌는 전환점. AI·반도체 산업에서 ChatGPT 등장, HBM 수요 폭발 등이 대표적인 변곡점으로 언급됨."},
+  {ko:"로보틱스",en:"Robotics",cat:"AI",desc:"로봇을 설계·제작·제어하는 기술 분야. AI와 결합한 지능형 로봇이 제조·물류·의료·가정 등 다양한 분야에 확산 중."},
+  {ko:"반도체 패키징",en:"Advanced Packaging",cat:"데이터",desc:"개별 반도체 칩을 하나의 패키지에 통합하는 기술. HBM처럼 여러 칩을 3D로 적층하는 첨단 패키징이 AI 반도체 성능을 좌우하는 핵심 기술로 부상."},
+  {ko:"초지능",en:"Superintelligence",cat:"AI",desc:"인간의 인지 능력을 모든 분야에서 크게 뛰어넘는 가상의 AI. AGI보다 한 단계 위 개념. 실현 가능성과 시기에 대해 연구자들 사이에서 논쟁 중."},
 ];
 
 const STORAGE_KEY = 'vibe_glossary_v4';

@@ -663,6 +663,22 @@ const DEFAULT_TERMS = [
   {ko:"로보틱스",en:"Robotics",cat:"AI",desc:"로봇을 설계·제작·제어하는 기술 분야. AI와 결합한 지능형 로봇이 제조·물류·의료·가정 등 다양한 분야에 확산 중."},
   {ko:"반도체 패키징",en:"Advanced Packaging",cat:"데이터",desc:"개별 반도체 칩을 하나의 패키지에 통합하는 기술. HBM처럼 여러 칩을 3D로 적층하는 첨단 패키징이 AI 반도체 성능을 좌우하는 핵심 기술로 부상."},
   {ko:"초지능",en:"Superintelligence",cat:"AI",desc:"인간의 인지 능력을 모든 분야에서 크게 뛰어넘는 가상의 AI. AGI보다 한 단계 위 개념. 실현 가능성과 시기에 대해 연구자들 사이에서 논쟁 중."},
+
+  // ── 추가 용어 (영상 기반) ──
+  {ko:"A2A 프로토콜",en:"Agent-to-Agent Protocol (A2A)",cat:"AI",desc:"Google이 2025년 4월 발표한 AI 에이전트 간 통신 표준. 서로 다른 프레임워크나 벤더의 AI 에이전트들이 직접 소통·협업할 수 있게 해줌. MCP가 에이전트↔도구 연결이라면 A2A는 에이전트↔에이전트 연결. Linux Foundation이 관리."},
+  {ko:"KV 캐시",en:"KV Cache (Key-Value Cache)",cat:"AI",desc:"LLM이 텍스트를 생성할 때 이미 처리한 토큰의 어텐션 계산값(Key·Value)을 메모리에 저장해 재계산을 생략하는 최적화 기법. 응답 속도를 대폭 향상시키며 AI 추론 비용의 핵심 변수."},
+  {ko:"TPOT",en:"Time Per Output Token",cat:"AI",desc:"LLM이 첫 토큰 이후 토큰 하나를 생성하는 데 걸리는 평균 시간. AI 서비스의 응답 속도를 나타내는 핵심 성능 지표. TTFT(첫 토큰 지연)와 함께 사용자 경험을 측정함."},
+  {ko:"TTFT",en:"Time To First Token",cat:"AI",desc:"사용자가 요청을 보낸 후 LLM이 첫 번째 토큰을 출력하기까지 걸리는 시간. 채팅·실시간 AI 서비스에서 체감 반응 속도를 좌우하는 핵심 지표."},
+  {ko:"SRAM",en:"Static Random Access Memory",cat:"데이터",desc:"전원이 공급되는 한 데이터를 유지하는 고속 메모리. 주기적 리프레시 불필요. DRAM보다 빠르지만 비싸고 집적도 낮아 CPU·GPU 내부 캐시 메모리에 주로 사용."},
+  {ko:"DRAM",en:"Dynamic Random Access Memory",cat:"데이터",desc:"캐패시터에 전하를 저장하는 방식의 메모리. 주기적 리프레시 필요. SRAM보다 느리지만 저렴하고 집적도 높아 PC의 주 메모리(RAM), HBM 등에 사용. AI 학습·추론의 핵심 부품."},
+  {ko:"SSD",en:"Solid State Drive",cat:"데이터",desc:"플래시 메모리(NAND) 기반의 저장장치. 기계적 회전 부품이 없는 HDD보다 읽기·쓰기 속도가 훨씬 빠르고 내구성 높음. AI 서버에서 대용량 데이터셋 저장에 사용."},
+  {ko:"CXL",en:"Compute Express Link",cat:"데이터",desc:"PCIe 물리 레이어 기반의 차세대 메모리 인터커넥트 표준. CPU·GPU·가속기·메모리 장치를 캐시 일관성을 유지하며 연결. AI 서버에서 GPU 메모리 병목 해소를 위한 메모리 풀링에 활용. CXL 4.0은 128GT/s 지원."},
+  {ko:"PCIe",en:"PCI Express",cat:"기초",desc:"컴퓨터 내부에서 CPU와 GPU, SSD, 네트워크 카드 등을 고속으로 연결하는 직렬 버스 인터페이스 표준. AI 서버에서 GPU 데이터 전송의 핵심 통로. Gen5·Gen6·Gen7로 세대가 발전 중."},
+  {ko:"AI 안경",en:"AI Glasses",cat:"도구",desc:"AI 기능을 내장한 스마트 안경. 카메라·마이크·스피커를 통해 주변 환경을 인식하고 AI 응답을 제공. Meta Ray-Ban, Google Android XR 안경, Halliday 등이 대표적. 2025~2026년 웨어러블 AI의 핵심 폼팩터."},
+  {ko:"프로액티브 AI",en:"Proactive AI",cat:"AI",desc:"사용자가 먼저 묻지 않아도 상황을 판단해 스스로 정보·알림·제안을 제공하는 AI. AI 안경이 날씨·일정·위치를 파악해 자동으로 우산 챙기기를 알려주는 것이 대표적 사례. 반응형(Reactive) AI의 반대 개념."},
+  {ko:"Mac mini M4",en:"Mac mini M4",cat:"도구",desc:"Apple이 2024년 출시한 M4·M4 Pro 칩 탑재 소형 데스크톱. 16코어 Neural Engine과 통합 메모리 구조로 로컬 LLM 실행에 탁월한 가성비. AI 열풍 속 로컬 AI 워크스테이션으로 재조명받으며 품귀 현상 발생."},
+  {ko:"HBF",en:"High Bandwidth Flash",cat:"데이터",desc:"낸드플래시(NAND Flash)를 수직으로 적층해 HBM의 용량 부족을 보완하는 차세대 메모리 기술. AI 연산에 필요한 대용량 데이터를 고속으로 저장·공급. HBM(DRAM 적층)·HBS(SRAM 적층)와 함께 미래 3D 반도체 구조의 핵심 3요소 중 하나. 김정호 KAIST 교수 제안 개념."},
+  {ko:"HBS",en:"High Bandwidth SRAM",cat:"데이터",desc:"GPU 내부에 SRAM을 웨이퍼 단위로 수직 적층해 기존 대비 속도를 1000배 이상 끌어올리는 차세대 반도체 기술. HBM(DRAM)·HBF(NAND) 위에 GPU/CPU가 올라가는 3D 반도체 구조의 최상위 레이어. 미래 AI 컴퓨터의 궁극적 메모리 구조로 전망됨. 김정호 KAIST 교수 제안 개념."},
 ];
 
 const STORAGE_KEY = 'vibe_glossary_v4';

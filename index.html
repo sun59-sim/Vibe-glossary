@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>바이브 코딩 용어집 v2</title>
 <style>
   :root {
@@ -122,7 +122,16 @@
 
   .modal h2.edit-mode { color: var(--accent2); }
 
-  @media(max-width:520px){ .grid { grid-template-columns: 1fr; } }
+  @media(max-width:520px){
+    .grid { grid-template-columns: 1fr; }
+    .desc { font-size: 0.88rem; line-height: 1.65; }
+    .term-ko { font-size: 1.05rem; }
+    .term-en { font-size: 0.78rem; }
+    .filter-btn { font-size: 0.8rem; padding: 6px 14px; }
+    .search-wrap input { font-size: 0.95rem; padding: 12px 14px 12px 42px; }
+    .card { padding: 14px 16px; }
+    .btn-edit, .btn-del { padding: 5px 14px; font-size: 0.78rem; }
+  }
 </style>
 </head>
 <body>

@@ -887,37 +887,35 @@ function parseJson(silent = false) {
   const CATS = ['기초','도구','개발','AI','보안','데이터'];
   let en = '', cat = '', desc = '';
 
-  // 1차: 줄바꿈 기반 텍스트 파싱 (영문: / 카테고리: / 설명: 형식)
-  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-  lines.forEach(line => {
-    if (!en   && /^영문\s*[:：]/i.test(line))    en   = line.replace(/^[^:：]+[：:]\s*/, '').trim();
-    if (!cat  && /^카테고리\s*[:：]/i.test(line)) cat  = line.replace(/^[^:：]+[：:]\s*/, '').trim();
-    if (!desc && /^설명\s*[:：]/i.test(line))     desc = line.replace(/^[^:：]+[：:]\s*/, '').trim();
-  });
+  // 방법1: 정규식으로 직접 추출 (JSON 파싱 안 함 → 중괄호 섞여도 OK)
+  const enM   = raw.match(/"en"\s*:\s*"([^"]+)"/);
+  const catM  = raw.match(/"cat"\s*:\s*"([^"]+)"/);
+  const descM = raw.match(/"desc"\s*:\s*"([\s\S]+?)"(?:\s*\}?\s*$)/);
 
-  // 카테고리 정규화 (슬래시로 구분된 경우 대비)
+  if (enM)   en   = enM[1].trim();
+  if (catM)  cat  = catM[1].trim();
+  if (descM) desc = descM[1].trim();
+
+  // 방법2: 텍스트 형식 파싱 (영문: / 카테고리: / 설명: 형식)
+  if (!desc) {
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    lines.forEach(line => {
+      if (!en   && /^영문\s*[:：]/i.test(line))    en   = line.replace(/^[^:：]+[：:]\s*/,'').trim();
+      if (!cat  && /^카테고리\s*[:：]/i.test(line)) cat  = line.replace(/^[^:：]+[：:]\s*/,'').trim();
+      if (!desc && /^설명\s*[:：]/i.test(line))     desc = line.replace(/^[^:：]+[：:]\s*/,'').trim();
+    });
+  }
+
+  // 카테고리 정규화
   if (cat) {
     const found = CATS.find(c => cat.includes(c));
     cat = found || '';
   }
 
-  // 2차: JSON 파싱 시도 (혹시 JSON으로 답변한 경우)
-  if (!desc) {
-    try {
-      const match = raw.replace(/```json|```/gi, '').match(/\{[\s\S]*\}/);
-      if (match) {
-        const parsed = JSON.parse(match[0]);
-        en   = parsed.en   || en;
-        cat  = parsed.cat  || cat;
-        desc = parsed.desc || desc;
-      }
-    } catch(e) {}
-  }
-
   // 결과 입력
   if (en)   document.getElementById('f-en').value   = en;
-  if (desc) document.getElementById('f-desc').value = desc.replace(/[{}]/g,'').replace(/"/g,"'").trim();
-  if (cat && CATS.includes(cat)) document.getElementById('f-cat').value = cat;
+  if (desc) document.getElementById('f-desc').value = desc;
+  if (cat)  document.getElementById('f-cat').value  = cat;
 
   if (desc) {
     if (!silent) {

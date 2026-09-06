@@ -845,9 +845,14 @@ function askClaude() {
   const ko = document.getElementById('f-ko').value.trim();
   if (!ko) { alert('용어명을 먼저 입력하세요.'); return; }
 
-  const prompt = `IT·AI 바이브코딩 용어집에 "${ko}" 용어를 추가하려고 해. 아래 JSON 형식으로만 답해줘. 마크다운 코드블록 없이 JSON만 출력해.
+  const prompt = `IT·AI 바이브코딩 용어집에 "${ko}" 용어를 추가하려고 해. 아래 JSON 형식으로만 답해줘.
 
-{"en":"영문 원어 또는 약어","cat":"기초 또는 도구 또는 개발 또는 AI 또는 보안 또는 데이터 중 하나","desc":"한국어 설명 (2~3문장, IT 비전공자도 이해할 수 있게 쉽고 구체적으로)"}`;
+규칙:
+1. 마크다운 코드블록 없이 JSON만 출력할 것
+2. desc(설명) 안에는 중괄호 { } 와 큰따옴표 " 를 절대 사용하지 말 것
+3. desc는 2~3문장, IT 비전공자도 이해할 수 있게 쉽고 구체적으로 작성
+
+{"en":"영문 원어 또는 약어","cat":"기초 또는 도구 또는 개발 또는 AI 또는 보안 또는 데이터 중 하나","desc":"한국어 설명"}`;
 
   navigator.clipboard.writeText(prompt).then(() => {
     window.open('https://claude.ai', '_blank');
@@ -894,7 +899,10 @@ function parseJson(silent = false) {
     const parsed = JSON.parse(match[0]);
 
     if (parsed.en !== undefined) document.getElementById('f-en').value = parsed.en;
-    if (parsed.desc) document.getElementById('f-desc').value = parsed.desc;
+    if (parsed.desc) document.getElementById('f-desc').value = parsed.desc
+      .replace(/[{}]/g, '')       // 중괄호 제거
+      .replace(/"/g, "'")         // 큰따옴표 → 작은따옴표
+      .trim();
     if (parsed.cat && ['기초','도구','개발','AI','보안','데이터'].includes(parsed.cat)) {
       document.getElementById('f-cat').value = parsed.cat;
     }
